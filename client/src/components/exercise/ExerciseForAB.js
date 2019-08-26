@@ -76,9 +76,32 @@ class ExerciseForAb extends Component {
         if (props.routineDay.routineDay !== state.routineDay) {
             const routineDay = props.routineDay.routineDay;
 
+            let aeA = [];
+            let aeB = [];
+
+            if (routineDay.add_exerciseA && routineDay.add_exerciseB) {
+                for (let i = 0; i < routineDay.add_exerciseA.length; i++) {
+                    let add_exerciseFields = {
+                        add_exercise: routineDay.add_exerciseA[i].add_exercise,
+                        add_exercise_kg: 0,
+                        add_exercise_reps: 0,
+                    };
+                    aeA.push(add_exerciseFields);
+                }
+
+                for (let i = 0; i < routineDay.add_exerciseB.length; i++) {
+                    let add_exerciseFields = {
+                        add_exercise: routineDay.add_exerciseB[i].add_exercise,
+                        add_exercise_kg: 0,
+                        add_exercise_reps: 0,
+                    };
+                    aeB.push(add_exerciseFields);
+                }
+            }
+
             return ({
-                add_exerciseA: routineDay.add_exerciseA,
-                add_exerciseB: routineDay.add_exerciseB,
+                add_exerciseA: aeA,
+                add_exerciseB: aeB,
                 routineDay: props.routineDay.routineDay
             });
         }
@@ -86,23 +109,32 @@ class ExerciseForAb extends Component {
     }
 
     onChange(event, ab) {
-
         if (ab === 'a') {
             const e = this.state.add_exerciseA;
-            const i = e.findIndex(e => e === event.target.value);
+            const i = e.findIndex(e => e.add_exercise === event.target.value);
 
             if (i < 0 || e.length === 0) {
-                e.push(event.target.value);
+                let add_exerciseFields = {
+                    add_exercise: event.target.value,
+                    add_exercise_kg: 0,
+                    add_exercise_reps: 0,
+                };
+                e.push(add_exerciseFields);
                 this.setState({add_exerciseA: e});
             }
         }
 
         if (ab === 'b') {
             const e = this.state.add_exerciseB;
-            const i = e.findIndex(e => e === event.target.value);
+            const i = e.findIndex(e => e.add_exercise === event.target.value);
 
             if (i < 0 || e.length === 0) {
-                e.push(event.target.value);
+                let add_exerciseFields = {
+                    add_exercise: event.target.value,
+                    add_exercise_kg: 0,
+                    add_exercise_reps: 0,
+                };
+                e.push(add_exerciseFields);
                 this.setState({add_exerciseB: e});
             }
         }

@@ -84,7 +84,7 @@ router.post('/addab', passport.authenticate('jwt', {session: false}), (req, res)
     let aeA = [];
     for (let i = 0; i < req.body.add_exerciseA.length; i++) {
         let add_exerciseFields = {
-            add_exercise: req.body.add_exerciseA[i],
+            add_exercise: req.body.add_exerciseA[i].add_exercise,
             add_exercise_kg: 0,
             add_exercise_reps: 0,
         };
@@ -94,7 +94,7 @@ router.post('/addab', passport.authenticate('jwt', {session: false}), (req, res)
     let aeB = [];
     for (let i = 0; i < req.body.add_exerciseB.length; i++) {
         let add_exerciseFields = {
-            add_exercise: req.body.add_exerciseB[i],
+            add_exercise: req.body.add_exerciseB[i].add_exercise,
             add_exercise_kg: 0,
             add_exercise_reps: 0,
         };
@@ -105,10 +105,12 @@ router.post('/addab', passport.authenticate('jwt', {session: false}), (req, res)
         .then(routine_day => {
             if (routine_day) {
 
+
                 // Update
                 RoutineDay.findOneAndUpdate(
                     {user: req.user.id},
-                    {$set: {add_exerciseA: aeA, add_exerciseB: aeB}},
+                    {$set: {add_exerciseA: aeA,
+                            add_exerciseB: aeB}},
                     {new: true}
                 ).then(routineDay => res.json(routineDay));
             } else {
