@@ -5,7 +5,7 @@ const passport = require('passport');
 
 // Load validation
 const validatePlanInput = require('../../validation/plan');
-// Load Profile Model
+// Load Plan Model
 const Plan = require('../../models/Plan');
 // Load User Model
 const User = require('../../models/User');

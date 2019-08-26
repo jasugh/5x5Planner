@@ -49,10 +49,8 @@ class Exercise extends Component {
     constructor(props) {
         super(props);
         this.state = ({
-            value: 'two',
+            value: 'three',
         });
-
-        // this.onChange = this.onChange.bind(this);
     }
 
     handleChange = (event, value) => {

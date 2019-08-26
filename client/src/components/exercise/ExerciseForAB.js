@@ -172,13 +172,17 @@ class ExerciseForAb extends Component {
         // const {errors} = this.state;
 
         let button_text = 'add';
-        routineDay.add_exerciseA ? button_text = 'update' : button_text = 'add';
+        if (routineDay.add_exerciseA && routineDay.add_exerciseB) {
+            if (routineDay.add_exerciseA.length > 0 || routineDay.add_exerciseB.length > 0) {
+                button_text = 'update';
+            }
+        }
 
         let exerciseView = [];
 
         if (!routineDay_loading && !exercise_loading) {
             exerciseView.push(
-                <Grid container justify="center">
+                <Grid container justify="center" key={"a"}>
                     <Grid item xs={12}>
                         <Typography
                             align={"center"}
@@ -224,8 +228,8 @@ class ExerciseForAb extends Component {
 
 
             exerciseView.push(
-                <Grid item xs={12}>
-                    <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
+                <Grid item xs={12} key={"b"}>
+                    <List style={{maxHeight: 800, overflow: "auto"}} component="nav">
                         {this.state.add_exerciseA.map((a_row, index) => {
                             return (
                                 <ListItem
@@ -257,7 +261,7 @@ class ExerciseForAb extends Component {
             );
 
             exerciseView.push(
-                <Grid container justify="center">
+                <Grid container justify="center" key={"c"}>
                     <Grid item xs={12}>
                         <Typography
                             className={classes.divider}
@@ -303,7 +307,7 @@ class ExerciseForAb extends Component {
             );
 
             exerciseView.push(
-                <Grid item xs={12}>
+                <Grid item xs={12} key={"d"}>
                     <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
                         {this.state.add_exerciseB.map((b_row, index) => {
                             return (
@@ -338,7 +342,7 @@ class ExerciseForAb extends Component {
             );
 
             exerciseView.push(
-                <div>
+                <div key={"e"}>
                     <Grid container style={{width: "auto"}} justify="center">
                         <Button
                             className={classes.buttonPadding}

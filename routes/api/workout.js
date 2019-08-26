@@ -8,7 +8,7 @@ const validateWorkoutInput = require('../../validation/workout');
 
 // Load Routine Model
 const Routine = require('../../models/Routine');
-// Load Routine Model
+// Load Workout Model
 const Workout = require('../../models/Workout');
 // Load User Model
 const User = require('../../models/User');

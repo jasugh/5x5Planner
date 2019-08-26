@@ -7,32 +7,20 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
-
-// import isEmpty from "../../validation/is-empty";
-
-import {
-    // clearErrors,
-    // deleteExercise,
-    getAllExercise,
-    // getExercise,
-    // saveExercise,
-    // updateExercise
-} from "../../actions/exerciseActions";
-import {getPlan} from "../../actions/planActions";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import Checkbox from "@material-ui/core/Checkbox";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import * as moment from "moment";
-// import CheckIcon from '@material-ui/icons/Check';
-// import RemoveIcon from '@material-ui/icons/Remove';
+
+import {getRoutineDay, saveAdditionalDay} from "../../actions/routineDayActions";
+import {getAllExercise} from "../../actions/exerciseActions";
+import {getPlan} from "../../actions/planActions";
 
 
 const styles = theme => ({
@@ -75,25 +63,48 @@ class ExerciseByDay extends Component {
         this.state = ({
             errors: {},
 
-            addExercise: [],
+            add_exerciseDay: [],
+            exerciseDay: '',
             exercise: '',
             days: [],
-            selected: 'day1',
+            selected: '0',
         });
-
         this.onChange = this.onChange.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.onDeleteClick = this.onDeleteClick.bind(this);
         this.onSelectClick = this.onSelectClick.bind(this);
     }
 
     componentDidMount() {
         this.props.getPlan();
+        this.props.getRoutineDay();
         this.props.getAllExercise();
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (props.plan.plan !== state.plan) {
 
+        if (props.routineDay.routineDay !== state.routineDay) {
+            const routineDay = props.routineDay.routineDay;
+            let aeD = [];
+            if (routineDay.add_exerciseDay) {
+                for (let i = 0; i < routineDay.add_exerciseDay.length; i++) {
+                    let add_exerciseFields = {
+                        week_day: routineDay.add_exerciseDay[i].week_day,
+                        add_exercise: routineDay.add_exerciseDay[i].add_exercise,
+                        add_exercise_kg: 0,
+                        add_exercise_reps: 0,
+                    };
+                    aeD.push(add_exerciseFields);
+                }
+            }
+
+            return ({
+                add_exerciseDay: aeD,
+                routineDay: props.routineDay.routineDay
+            });
+        }
+
+        if (props.plan.plan !== state.plan) {
             let wo_dates = [];
             wo_dates.push(props.plan.plan.monday);
             wo_dates.push(props.plan.plan.tuesday);
@@ -109,7 +120,6 @@ class ExerciseByDay extends Component {
                     days.push(i + 1);
                 }
             }
-
             return {
                 days: days
             }
@@ -118,9 +128,9 @@ class ExerciseByDay extends Component {
     }
 
     onChange(event) {
-        let e = this.state.addExercise;
+        let e = this.state.add_exerciseDay;
 
-        const i = e.findIndex(e => e === event.target.value);
+        const i = e.findIndex(e => e.add_exercise === event.target.value && e.week_day === this.state.selected);
 
         if (i < 0 || e.length === 0) {
             const exercise = {
@@ -130,15 +140,22 @@ class ExerciseByDay extends Component {
 
             e.push(exercise);
             e.sort((a, b) => (a.week_day > b.week_day) ? 1 : ((b.week_day > a.week_day) ? -1 : 0));
-
-            this.setState({addExercise: e});
+            this.setState({add_exerciseDay: e});
         }
     };
 
+    onSave() {
+        const addD = {
+            add_exerciseDay: this.state.add_exerciseDay,
+        };
+
+        this.props.saveAdditionalDay(addD);
+    }
+
     onDeleteClick(index) {
-        let e = this.state.addExercise;
+        let e = this.state.add_exerciseDay;
         e.splice(index, 1);
-        this.setState({addExercise: e});
+        this.setState({add_exerciseDay: e});
     }
 
     onChecked = name => event => {
@@ -151,20 +168,21 @@ class ExerciseByDay extends Component {
 
     render() {
         const {classes} = this.props;
+        const {routineDay} = this.props.routineDay;
         const {exercise} = this.props.exercise;
-        // const {plan} = this.props.plan;
-        // const {errors} = this.state;
         const exercise_loading = this.props.exercise.loading;
         const plan_loading = this.props.plan.loading;
 
         let button_text = 'add';
-        // routineDay._id ? button_text = 'update' : button_text = 'add';
+        if (routineDay.add_exerciseDay) {
+            routineDay.add_exerciseDay.length > 0 ? button_text = 'update' : button_text = 'add';
+        }
 
         let exerciseView = [];
 
         if (!exercise_loading && !plan_loading) {
             exerciseView.push(
-                <Grid container justify="center">
+                <Grid container justify="center" key={"a"}>
                     <Grid item xs={12}>
                         <Typography
                             align={"center"}
@@ -238,9 +256,9 @@ class ExerciseByDay extends Component {
 
 
             exerciseView.push(
-                <Grid item xs={12}>
+                <Grid item xs={12} key={"b"}>
                     <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
-                        {this.state.addExercise.map((add_row, index) => {
+                        {this.state.add_exerciseDay.map((add_row, index) => {
                             return (
                                 <ListItem
                                     className={classes.listItem}
@@ -277,24 +295,16 @@ class ExerciseByDay extends Component {
             );
 
             exerciseView.push(
-                <div>
+                <div key={"c"}>
                     <Grid container style={{width: "auto"}} justify="center">
                         <Button
                             className={classes.buttonPadding}
                             variant={"contained"}
                             color="primary"
-                            onClick={this.onSubmit}
+                            onClick={this.onSave}
                         >
                             {button_text}
                         </Button>
-                        {/*<Button*/}
-                        {/*    size={"medium"}*/}
-                        {/*    variant={"contained"}*/}
-                        {/*    color="inherit"*/}
-                        {/*    onClick={this.onCancel}*/}
-                        {/*    className={classes.buttonPadding}>*/}
-                        {/*    cancel*/}
-                        {/*</Button>*/}
                     </Grid>
                 </div>
             );
@@ -320,17 +330,22 @@ class ExerciseByDay extends Component {
 
 ExerciseByDay.propTypes = {
     getAllExercise: PropTypes.func.isRequired,
+    saveAdditionalDay: PropTypes.func.isRequired,
     getPlan: PropTypes.func.isRequired,
+    routineDay: PropTypes.object.isRequired,
     exercise: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+    routineDay: state.routineDay,
     exercise: state.exercise,
     plan: state.plan,
     errors: state.errors
 });
 
 export default connect(mapStateToProps, {
+    getRoutineDay,
+    saveAdditionalDay,
     getAllExercise,
     getPlan,
 })(withStyles(styles)(ExerciseByDay));

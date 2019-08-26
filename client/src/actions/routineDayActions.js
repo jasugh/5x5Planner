@@ -6,6 +6,7 @@ import {
     GET_ROUTINE_DAY,
     SAVE_ROUTINE_DAY,
     SAVE_ADD_AB,
+    SAVE_ADD_DAY,
     LOADING_ROUTINE_DAY,
     STOP_LOADING_ROUTINE_DAY
 
@@ -62,6 +63,28 @@ export const saveAdditionalAB = (addAB ) => dispatch => {
         .then(res => {
             dispatch({
                 type: SAVE_ADD_AB,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            });
+            dispatch(stopLoadingRoutineDay());
+        });
+};
+
+
+//Save additional exercises for workout days
+export const saveAdditionalDay = (addDay ) => dispatch => {
+    dispatch(clearErrors());
+    dispatch(setLoadingRoutineDay());
+
+    axios.post('/api/routineday/addday', addDay)
+        .then(res => {
+            dispatch({
+                type: SAVE_ADD_DAY,
                 payload: res.data
             });
         })

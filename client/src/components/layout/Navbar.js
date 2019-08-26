@@ -355,7 +355,6 @@ class Navbar extends Component {
                             >
                                 <ListItemText primary="Workout Calendar"/>
                             </ListItem>
-
                         </List>
                     </Drawer>
 

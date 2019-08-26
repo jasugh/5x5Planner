@@ -27,7 +27,7 @@ import RoutinePlan from './components/routines/RoutinePlan';
 import RoutineList from './components/routines/RoutineList';
 import RoutineTable from "./components/routines/RoutineTable";
 import WorkoutCalendar from "./components/workout/WorkoutCalendar";
-
+import Workout from "./components/workout/Workout";
 
 const theme = createMuiTheme({
     palette: {
@@ -112,6 +112,7 @@ class App extends Component {
                                     <PrivateRoute exact path="/routine/list" component={RoutineList}/>
                                     <PrivateRoute exact path="/routine/update" component={RoutineTable}/>
                                     <PrivateRoute exact path="/workout/calendar" component={WorkoutCalendar}/>
+                                    <PrivateRoute exact path="/workout" component={Workout}/>
                                 </Switch>
                             </div>
                         </MuiThemeProvider>

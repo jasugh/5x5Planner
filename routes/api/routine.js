@@ -59,30 +59,30 @@ router.post('/update', passport.authenticate('jwt', {session: false}), (req, res
 
     Routine.findOne(
         {user: req.user.id}, function (err, routine) {
-        if (err) {
-            return res.status(404).json(err);
-        }
-
-        if (routine) {
-            const index = routine.workouts.findIndex(wo => moment(wo.date).format("YYYY-MM-DD") === moment(req.body.date).format("YYYY-MM-DD"));
-            let wo = routine.workouts;
-
-            if (index >= 0) {
-                wo[index] = updatedRoutine;
-            } else {
-                return res.status(404).json({errMsg: 'Workout date not found.'});
+            if (err) {
+                return res.status(404).json(err);
             }
 
-            Routine.findOneAndUpdate(
-                {user: req.user.id},
-                {$set: {workouts: wo}},
-                {new: true}
-            ).then(routine => res.json(routine));
+            if (routine) {
+                const index = routine.workouts.findIndex(wo => moment(wo.date).format("YYYY-MM-DD") === moment(req.body.date).format("YYYY-MM-DD"));
+                let wo = routine.workouts;
 
-        } else {
-            return res.status(404).json({errMsg: 'Routine not found.'});
-        }
-    });
+                if (index >= 0) {
+                    wo[index] = updatedRoutine;
+                } else {
+                    return res.status(404).json({errMsg: 'Workout date not found.'});
+                }
+
+                Routine.findOneAndUpdate(
+                    {user: req.user.id},
+                    {$set: {workouts: wo}},
+                    {new: true}
+                ).then(routine => res.json(routine));
+
+            } else {
+                return res.status(404).json({errMsg: 'Routine not found.'});
+            }
+        });
 });
 
 
@@ -114,83 +114,7 @@ router.post('/beginner', passport.authenticate('jwt', {session: false}), (req, r
 
                     // let wo = [];
                     let sd = plan.start_date;
-
-
                     let wo = createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, deadlift_kg, barbell_row_kg);
-
-                    // // Workout A (add the first day here)
-                    // wo.push(addWorkout(
-                    //     1, sd,
-                    //     routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //     squat_kg, bench_kg, barbell_row_kg
-                    // ));
-                    //
-                    // // The are 3 workouts per week and 12 weeks
-                    // let w = 1;
-                    // let c = 1;
-                    //
-                    // for (let i = 0; i < 18; i++) {
-                    //     squat_kg = squat_kg + 2.5;
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     }
-                    //
-                    //     //Add 2.5 kg to every workout (except deadlift)
-                    //     squat_kg = squat_kg + 2.5;
-                    //     bench_kg = bench_kg + 2.5;
-                    //     barbell_row_kg = barbell_row_kg + 2.5;
-                    //     overhead_kg = overhead_kg + 2.5;
-                    //     if (deadlift_kg < 100) {
-                    //         deadlift_kg = deadlift_kg + 5;
-                    //     } else {
-                    //         deadlift_kg = deadlift_kg + 2.5;
-                    //     }
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     }
-                    // }
 
                     const routineFields = {};
                     routineFields.user = req.user.id;
@@ -253,83 +177,7 @@ router.post('/experienced', passport.authenticate('jwt', {session: false}), (req
 
                     // let wo = [];
                     let sd = plan.start_date;
-
                     let wo = createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, deadlift_kg, barbell_row_kg);
-
-
-                    // // Workout A (add the first day here)
-                    // wo.push(addWorkout(
-                    //     1, sd,
-                    //     routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //     squat_kg, bench_kg, barbell_row_kg
-                    // ));
-                    //
-                    // // The are 3 workouts per week and 12 weeks
-                    // let w = 1;
-                    // let c = 1;
-                    //
-                    // for (let i = 0; i < 18; i++) {
-                    //     squat_kg = squat_kg + 2.5;
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     }
-                    //
-                    //     //Add 2.5 kg to every workout (except deadlift)
-                    //     squat_kg = squat_kg + 2.5;
-                    //     bench_kg = bench_kg + 2.5;
-                    //     barbell_row_kg = barbell_row_kg + 2.5;
-                    //     overhead_kg = overhead_kg + 2.5;
-                    //     if (deadlift_kg <= 100) {
-                    //         deadlift_kg = deadlift_kg + 5;
-                    //     } else {
-                    //         deadlift_kg = deadlift_kg + 2.5;
-                    //     }
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     }
-                    // }
 
                     const routineFields = {};
                     routineFields.user = req.user.id;
@@ -387,83 +235,7 @@ router.post('/fixed', passport.authenticate('jwt', {session: false}), (req, res)
 
                     // let wo = [];
                     let sd = plan.start_date;
-
                     let wo = createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, deadlift_kg, barbell_row_kg);
-
-                    // // Workout A (add the first day here)
-                    // wo.push(addWorkout(
-                    //     1, sd,
-                    //     routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //     squat_kg, bench_kg, barbell_row_kg
-                    // ));
-                    //
-                    // // The are 3 workouts per week and 12 weeks
-                    // let w = 1;
-                    // let c = 1;
-                    //
-                    // for (let i = 0; i < 18; i++) {
-                    //     squat_kg = squat_kg + 2.5;
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout B
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-                    //             squat_kg, overhead_kg, deadlift_kg
-                    //         ));
-                    //     }
-                    //
-                    //     //Add 2.5 kg to every workout (except deadlift)
-                    //     squat_kg = squat_kg + 2.5;
-                    //     bench_kg = bench_kg + 2.5;
-                    //     barbell_row_kg = barbell_row_kg + 2.5;
-                    //     overhead_kg = overhead_kg + 2.5;
-                    //     if (deadlift_kg <= 100) {
-                    //         deadlift_kg = deadlift_kg + 5;
-                    //     } else {
-                    //         deadlift_kg = deadlift_kg + 2.5;
-                    //     }
-                    //
-                    //     c++;
-                    //     if (c > 3) {
-                    //         c = 1;
-                    //         w++;
-                    //         if (w > 12) {
-                    //             break;
-                    //         }
-                    //         sd = addDays(sd, 3);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     } else {
-                    //         sd = addDays(sd, 2);
-                    //         // Workout A
-                    //         wo.push(addWorkout(
-                    //             w, sd,
-                    //             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-                    //             squat_kg, bench_kg, barbell_row_kg
-                    //         ));
-                    //     }
-                    // }
-
                     const routineFields = {};
                     routineFields.user = req.user.id;
                     routineFields.start_date = plan.start_date;
