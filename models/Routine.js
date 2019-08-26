@@ -60,7 +60,24 @@ const RoutineSchema = new Schema({
             finished: {
                 type: Boolean,
                 required: true,
-            }
+            },
+            add_exercises:
+                [
+                    {
+                        add_exercise: {
+                            type: String,
+                            required: true
+                        },
+                        add_exercise_kg: {
+                            type: Number,
+                            required: true
+                        },
+                        add_exercise_reps: {
+                            type: Number,
+                            required: true
+                        }
+                    }
+                ]
         }
     ],
     date: {

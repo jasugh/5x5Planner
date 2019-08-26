@@ -116,6 +116,7 @@ router.post('/beginner', passport.authenticate('jwt', {session: false}), (req, r
                     let sd = plan.start_date;
                     let wo = createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, deadlift_kg, barbell_row_kg);
 
+
                     const routineFields = {};
                     routineFields.user = req.user.id;
                     routineFields.start_date = plan.start_date;
@@ -312,6 +313,7 @@ function createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, de
     let weekNumber = 1;
     let exerciseNumber = startDNumber + 1;
     let firstExercise = true;
+    let aeD = [];
 
     for (let i = 0; i < 18; i++) {
 
@@ -333,10 +335,13 @@ function createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, de
             }
         }
         // Workout A
+        //Check if there are additional exercises for this week day
+        aeD = getAddtionalForDay(routineDay, woWeekDays, sd);
+
         wo.push(addWorkout(
             weekNumber, sd,
             routineDay.exercise11, routineDay.exercise12, routineDay.exercise13,
-            squat_kg, bench_kg, barbell_row_kg
+            squat_kg, bench_kg, barbell_row_kg, routineDay.add_exerciseA, aeD
         ));
 
         exerciseNumber++;
@@ -355,10 +360,13 @@ function createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, de
         }
 
         // Workout B
+        //Check if there are additional exercises for this week day
+        aeD = getAddtionalForDay(routineDay, woWeekDays, sd);
+
         wo.push(addWorkout(
             weekNumber, sd,
             routineDay.exercise21, routineDay.exercise22, routineDay.exercise23,
-            squat_kg, overhead_kg, deadlift_kg
+            squat_kg, overhead_kg, deadlift_kg, routineDay.add_exerciseB, aeD
         ));
 
         exerciseNumber++;
@@ -400,7 +408,11 @@ function addDays(date, days) {
     return newDate;
 }
 
-function addWorkout(week, date, ex1, ex2, ex3, kg1, kg2, kg3) {
+function addWorkout(week, date, ex1, ex2, ex3, kg1, kg2, kg3, addE, aeD) {
+    if (aeD.length > 0){
+         addE = addE.concat(aeD);
+    }
+
     let routineFields = {};
     routineFields.week = week;
     routineFields.date = date;
@@ -414,7 +426,25 @@ function addWorkout(week, date, ex1, ex2, ex3, kg1, kg2, kg3) {
     routineFields.exercise3_kg = kg3;
     routineFields.exercise3_reps = 5;
     routineFields.finished = false;
+    routineFields.add_exercises = addE;
     return routineFields;
+}
+
+function getAddtionalForDay(routineDay, woWeekDays, sd) {
+    let aeD = [];
+
+    for (let i = 0; i < routineDay.add_exerciseDay.length; i++) {
+
+        if (woWeekDays[routineDay.add_exerciseDay[i].week_day] === moment(sd).format('ddd')) {
+            const aeDFields = {
+                add_exercise: routineDay.add_exerciseDay[i].add_exercise,
+                add_exercise_kg: 0,
+                add_exercise_reps: 0
+            };
+            aeD.push(aeDFields);
+        }
+    }
+    return aeD;
 }
 
 function createRoutine_old(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, deadlift_kg, barbell_row_kg) {

@@ -49,7 +49,7 @@ class Exercise extends Component {
     constructor(props) {
         super(props);
         this.state = ({
-            value: 'three',
+            value: 'one',
         });
     }
 

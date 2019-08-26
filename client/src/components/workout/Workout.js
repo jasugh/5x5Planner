@@ -331,7 +331,7 @@ class Workout extends Component {
 
     onGo() {
         this.setState({alertOpen: false});
-        this.props.history.push('/routine/calendar');
+        this.props.history.push('/workout/calendar');
     }
 
     onClickRow(index, event) {
