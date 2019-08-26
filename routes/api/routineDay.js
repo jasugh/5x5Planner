@@ -5,36 +5,15 @@ const passport = require('passport');
 
 // Load validation
 const validateRoutineDayInput = require('../../validation/routineDay');
+const validateAddAB = require('../../validation/addAB');
+
 // Load Profile Model
 const RoutineDay = require('../../models/RoutineDay');
-
-// @route   GET api/routineday/test
-// @desc    Tests routineday route
-// @access  Public
-router.get('/test', (req, res) => res.json({msg: 'Routine Day route works'}));
-
-// @route   GET api/routineday
-// @desc    Get current routine day
-// @access  Private
-router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
-
-    const errors = {};
-
-    RoutineDay.findOne({user: req.user.id})
-        .then(routineDay => {
-            if (!routineDay) {
-                errors.noRoutineDay = 'There is no Routine Day data for this user';
-                return res.status(400).json(errors);
-            }
-            res.json(routineDay);
-        })
-        .catch(err => res.status(404).json(err));
-});
 
 // @route   POST api/routineday
 // @desc    Create or update routine days
 // @access  Private
-router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.post('/add', passport.authenticate('jwt', {session: false}), (req, res) => {
 
     const {errors, isValid} = validateRoutineDayInput(req.body);
 
@@ -69,6 +48,74 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                     .then(routineDay => res.json(routineDay))
             }
         });
+});
+
+// @route   GET api/routineday
+// @desc    Get current routine day
+// @access  Private
+router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+    const errors = {};
+
+    RoutineDay.findOne({user: req.user.id})
+        .then(routineDay => {
+            if (!routineDay) {
+                errors.noRoutineDay = 'There is no Routine Day data for this user';
+                return res.status(400).json(errors);
+            }
+            res.json(routineDay);
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+// @route   POST api/routineday
+// @desc    Create or update routine days
+// @access  Private
+router.post('/addab', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+    const errors = {};
+
+    // const {errors, isValid} = validateAddAB(req.body);
+    //
+    // if (!isValid) {
+    //     return res.status(400).json(errors);
+    // }
+
+    let aeA = [];
+    for (let i = 0; i < req.body.add_exerciseA.length; i++) {
+        let add_exerciseFields = {
+            add_exercise: req.body.add_exerciseA[i],
+            add_exercise_kg: 0,
+            add_exercise_reps: 0,
+        };
+        aeA.push(add_exerciseFields);
+    }
+
+    let aeB = [];
+    for (let i = 0; i < req.body.add_exerciseB.length; i++) {
+        let add_exerciseFields = {
+            add_exercise: req.body.add_exerciseB[i],
+            add_exercise_kg: 0,
+            add_exercise_reps: 0,
+        };
+        aeB.push(add_exerciseFields);
+    }
+
+    RoutineDay.findOne({user: req.user.id})
+        .then(routine_day => {
+            if (routine_day) {
+
+                // Update
+                RoutineDay.findOneAndUpdate(
+                    {user: req.user.id},
+                    {$set: {add_exerciseA: aeA, add_exerciseB: aeB}},
+                    {new: true}
+                ).then(routineDay => res.json(routineDay));
+            } else {
+                res.status(400).json({msg: 'No routine data found. Enter Workout A and B first.'})
+            }
+        })
+        .catch(err => res.status(404).json(err));
 });
 
 module.exports = router;

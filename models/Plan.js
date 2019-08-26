@@ -17,6 +17,14 @@ const PlanSchema = new Schema({
         default: 'beginner'
     },
     //TODO: Talleta vain viikonpäivät jotka on valittu. Tauluun?
+    //the first day of the week is Monday
+    week_days: [
+        {
+            week_day: {
+                type: String
+            }
+        }
+    ],
     monday: {
         type: Boolean,
         required: true,

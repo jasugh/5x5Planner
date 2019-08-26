@@ -17,7 +17,6 @@ export const savePlan = (planData, history) => dispatch => {
 
     axios.post('/api/plan', planData)
         .then(res => {
-            // history.push('/dashboard');
             dispatch({
                 type: SAVE_PLAN,
                 payload: res.data

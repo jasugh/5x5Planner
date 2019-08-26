@@ -43,20 +43,17 @@ function a11yProps(index) {
     };
 }
 
-
 const styles = theme => ({});
-
 
 class Exercise extends Component {
     constructor(props) {
         super(props);
         this.state = ({
-            value: 'one',
+            value: 'two',
         });
 
         // this.onChange = this.onChange.bind(this);
     }
-
 
     handleChange = (event, value) => {
         this.setState({value: value});

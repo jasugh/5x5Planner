@@ -6,12 +6,11 @@ import {connect} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import Select from "@material-ui/core/Select";
 
 import {getRoutineDay, saveRoutineDay} from '../../actions/routineDayActions';
-import isEmpty from "../../validation/is-empty";
+import {getAllExercise} from "../../actions/exerciseActions";
 
 const styles = theme => ({
     buttonPadding: {
@@ -46,13 +45,14 @@ class Exercise5x5 extends Component {
             exercise23: '',
             errors: {},
             routineDay: {},
+
             stateInitialized: false,
 
             tab: 0,
             value: 'one',
         });
         this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
         // this.handleChange = this.handleChange(this);
         this.handleChangeTab = this.handleChangeTab.bind(this);
@@ -60,6 +60,7 @@ class Exercise5x5 extends Component {
 
     componentDidMount() {
         this.props.getRoutineDay();
+        this.props.getAllExercise();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -67,16 +68,8 @@ class Exercise5x5 extends Component {
             return {errors: props.errors};
         }
 
-        if (props.routineDay.routineDay !== state.routineDay && !state.stateInitialized) {
+        if (props.routineDay.routineDay !== state.routineDay) {
             const routineDay = props.routineDay.routineDay;
-
-            // If routine day field doesnt exist, make empty string
-            routineDay.exercise11 = !isEmpty(routineDay.exercise11) ? routineDay.exercise11 : 'Squat';
-            routineDay.exercise12 = !isEmpty(routineDay.exercise12) ? routineDay.exercise12 : 'Bench Press';
-            routineDay.exercise13 = !isEmpty(routineDay.exercise13) ? routineDay.exercise13 : 'Barbell Row';
-            routineDay.exercise21 = !isEmpty(routineDay.exercise21) ? routineDay.exercise21 : 'Squat';
-            routineDay.exercise22 = !isEmpty(routineDay.exercise22) ? routineDay.exercise22 : 'Overhead Press';
-            routineDay.exercise23 = !isEmpty(routineDay.exercise23) ? routineDay.exercise23 : 'Deadlift';
 
             return ({
                 exercise11: routineDay.exercise11,
@@ -85,7 +78,7 @@ class Exercise5x5 extends Component {
                 exercise21: routineDay.exercise21,
                 exercise22: routineDay.exercise22,
                 exercise23: routineDay.exercise23,
-                stateInitialized: true,
+
                 routineDay: props.routineDay.routineDay
             });
         }
@@ -94,10 +87,12 @@ class Exercise5x5 extends Component {
 
 
     onChange(event) {
+        console.log('event.target.name ' + event.target.value);
+
         this.setState({[event.target.name]: event.target.value});
     }
 
-    onSubmit() {
+    onSave() {
         const routineDayData = {
             exercise11: this.state.exercise11,
             exercise12: this.state.exercise12,
@@ -107,7 +102,7 @@ class Exercise5x5 extends Component {
             exercise23: this.state.exercise23,
         };
 
-        this.props.saveRoutineDay(routineDayData, this.props.history);
+        this.props.saveRoutineDay(routineDayData);
     }
 
     onCancel() {
@@ -124,8 +119,10 @@ class Exercise5x5 extends Component {
 
     render() {
         const {classes} = this.props;
-        const {errors} = this.state;
         const {routineDay, loading} = this.props.routineDay;
+        const routineDay_loading = this.props.routineDay.loading;
+        const {exercise} = this.props.exercise;
+        const {exercise_loading} = this.props.exercise.loading;
 
         let button_text = '';
         routineDay._id ? button_text = 'update' : button_text = 'add';
@@ -138,38 +135,73 @@ class Exercise5x5 extends Component {
                     <Typography align={"center"} color="primary" variant="h6">
                         Workout A
                     </Typography>
-                    <TextField
+                    <Select
+                        native
+                        fullWidth
                         value={this.state.exercise11}
-                        error={!isEmpty(errors.exercise11)}
-                        helperText={errors.exercise11}
-                        label="Exercise 1"
+                        // error={!isEmpty(errors.category)}
+                        onChange={this.onChange}
                         name="exercise11"
+
+                    >
+                        <option value="">
+                            Select exercise 1...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
+
+                    <Select
+                        native
                         fullWidth
-                        onChange={this.onChange}
-                    />
-                    <TextField
                         value={this.state.exercise12}
-                        error={!isEmpty(errors.exercise12)}
-                        helperText={errors.exercise12}
-                        label="Exercise 2"
+                        // error={!isEmpty(errors.category)}
+                        onChange={this.onChange}
                         name="exercise12"
+
+                    >
+                        <option value="">
+                            Select exercise 2...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
+
+                    <Select
+                        native
                         fullWidth
-                        onChange={this.onChange}
-                    />
-                    <TextField
                         value={this.state.exercise13}
-                        error={!isEmpty(errors.exercise13)}
-                        helperText={errors.exercise13}
-                        label="Exercise 3"
-                        name="exercise13"
-                        fullWidth
+                        // error={!isEmpty(errors.category)}
                         onChange={this.onChange}
-                    />
+                        name="exercise13"
+
+                    >
+                        <option value="">
+                            Select exercise 3...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
 
                     {/*<Divider className={classes.divider}/>*/}
 
                     <Typography
-                        // className={classes.divider}
+                        style={{paddingTop: 20}}
                         align={"center"}
                         color="primary"
                         variant="h6"
@@ -177,60 +209,84 @@ class Exercise5x5 extends Component {
                         Workout B
                     </Typography>
 
-                    <TextField
-                        value={this.state.exercise11}
-                        error={!isEmpty(errors.exercise21)}
-                        helperText={errors.exercise21}
-                        label="Exercise 1"
-                        name="exercise11"
+                    <Select
+                        native
                         fullWidth
+                        value={this.state.exercise21}
+                        // error={!isEmpty(errors.category)}
                         onChange={this.onChange}
-                    />
-                    <TextField
-                        value={this.state.exercise22}
-                        error={!isEmpty(errors.exercise22)}
-                        helperText={errors.exercise22}
-                        label="Exercise 2"
-                        name="exercise22"
-                        fullWidth
-                        onChange={this.onChange}
-                    />
-                    <TextField
-                        value={this.state.exercise23}
-                        error={!isEmpty(errors.exercise23)}
-                        helperText={errors.exercise23}
-                        label="Exercise 3"
-                        name="exercise23"
-                        fullWidth
-                        onChange={this.onChange}
-                    />
+                        name="exercise21"
 
+                    >
+                        <option value="">
+                            Select exercise 1...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
+
+                    <Select
+                        native
+                        fullWidth
+                        value={this.state.exercise22}
+                        // error={!isEmpty(errors.category)}
+                        onChange={this.onChange}
+                        name="exercise22"
+
+                    >
+                        <option value="">
+                            Select exercise 2...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
+
+                    <Select
+                        style={{marginBottom: 30}}
+                        native
+                        fullWidth
+                        value={this.state.exercise23}
+                        // error={!isEmpty(errors.category)}
+                        onChange={this.onChange}
+                        name="exercise23"
+
+                    >
+                        <option value="">
+                            Select exercise 3...
+                        </option>
+                        {exercise.map((row, index) => {
+                            return (
+                                <option key={row.name} value={row.name}>
+                                    {row.name}
+                                </option>
+                            )
+                        })}
+                    </Select>
 
                     <Button
-                        size={"medium"}
+                        className={classes.buttonPadding}
                         variant={"contained"}
                         color="primary"
-                        onClick={this.onSubmit}
-                        className={classes.buttonPadding}
+                        onClick={this.onSave}
                     >
                         {button_text}
                     </Button>
-                    <Button
-                        size={"medium"}
-                        variant={"contained"}
-                        color="inherit"
-                        onClick={this.onCancel}
-                        className={classes.buttonPadding}
-                    >
-                        cancel
-                    </Button>
-
                 </Grid>
         }
 
         return (
             <div>
-                {loading ? (
+                {routineDay_loading || exercise_loading ? (
                         <Grid container justify="center">
                             <CircularProgress/>
                         </Grid>
@@ -249,12 +305,19 @@ class Exercise5x5 extends Component {
 Exercise5x5.propTypes = {
     getRoutineDay: PropTypes.func.isRequired,
     saveRoutineDay: PropTypes.func.isRequired,
+    getAllExercise: PropTypes.func.isRequired,
     routineDay: PropTypes.object.isRequired,
+    exercise: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     routineDay: state.routineDay,
+    exercise: state.exercise,
     errors: state.errors,
 });
 
-export default connect(mapStateToProps, {getRoutineDay, saveRoutineDay})(withStyles(styles)(Exercise5x5));
+export default connect(mapStateToProps, {
+    getRoutineDay,
+    saveRoutineDay,
+    getAllExercise
+})(withStyles(styles)(Exercise5x5));

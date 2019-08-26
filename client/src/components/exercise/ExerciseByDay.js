@@ -63,6 +63,9 @@ const styles = theme => ({
         width: 10,
         height: 10,
     },
+    listItem: {
+        background: theme.palette.primary.A100,
+    },
 });
 
 
@@ -75,7 +78,7 @@ class ExerciseByDay extends Component {
             addExercise: [],
             exercise: '',
             days: [],
-            selected: '',
+            selected: 'day1',
         });
 
         this.onChange = this.onChange.bind(this);
@@ -120,7 +123,14 @@ class ExerciseByDay extends Component {
         const i = e.findIndex(e => e === event.target.value);
 
         if (i < 0 || e.length === 0) {
-            e.push(event.target.value);
+            const exercise = {
+                week_day: this.state.selected,
+                add_exercise: event.target.value
+            };
+
+            e.push(exercise);
+            e.sort((a, b) => (a.week_day > b.week_day) ? 1 : ((b.week_day > a.week_day) ? -1 : 0));
+
             this.setState({addExercise: e});
         }
     };
@@ -174,19 +184,19 @@ class ExerciseByDay extends Component {
                             row
                         >
                             <FormControlLabel
-                                value="day1"
+                                value="0"
                                 control={<Radio color="primary"/>}
                                 label={moment.weekdays(this.state.days[0])}
                                 labelPlacement="top"
                             />
                             <FormControlLabel
-                                value="day2"
+                                value="1"
                                 control={<Radio color="primary"/>}
                                 label={moment.weekdays(this.state.days[1])}
                                 labelPlacement="top"
                             />
                             <FormControlLabel
-                                value="day3"
+                                value="2"
                                 control={<Radio color="primary"/>}
                                 label={moment.weekdays(this.state.days[2])}
                                 labelPlacement="top"
@@ -233,15 +243,19 @@ class ExerciseByDay extends Component {
                         {this.state.addExercise.map((add_row, index) => {
                             return (
                                 <ListItem
+                                    className={classes.listItem}
                                     divider
+                                    alignItems='flex-start'
                                     key={index}
                                     index={index}
                                     button
                                     selected={this.state.selectedIndex === index}
                                     // onClick={event => this.onListItemClick(event, index)}
                                 >
-                                    <ListItemText primary={add_row}/>
-
+                                    <ListItemText
+                                        primary={moment.weekdays(this.state.days[add_row.week_day])}
+                                        secondary={add_row.add_exercise}
+                                    />
                                     <ListItemSecondaryAction>
                                         <IconButton
                                             onClick={event => this.onDeleteClick(index)}
@@ -266,21 +280,21 @@ class ExerciseByDay extends Component {
                 <div>
                     <Grid container style={{width: "auto"}} justify="center">
                         <Button
-                            size={"medium"}
+                            className={classes.buttonPadding}
                             variant={"contained"}
                             color="primary"
                             onClick={this.onSubmit}
-                            className={classes.buttonPadding}>
+                        >
                             {button_text}
                         </Button>
-                        <Button
-                            size={"medium"}
-                            variant={"contained"}
-                            color="inherit"
-                            onClick={this.onCancel}
-                            className={classes.buttonPadding}>
-                            cancel
-                        </Button>
+                        {/*<Button*/}
+                        {/*    size={"medium"}*/}
+                        {/*    variant={"contained"}*/}
+                        {/*    color="inherit"*/}
+                        {/*    onClick={this.onCancel}*/}
+                        {/*    className={classes.buttonPadding}>*/}
+                        {/*    cancel*/}
+                        {/*</Button>*/}
                     </Grid>
                 </div>
             );

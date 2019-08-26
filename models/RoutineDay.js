@@ -7,7 +7,7 @@ const RoutineDaySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    // Day 1
+    // Workout A
     exercise11: {
         type: String,
         required: true,
@@ -23,7 +23,7 @@ const RoutineDaySchema = new Schema({
         required: true,
         max: 40
     },
-    add_exercise1:
+    add_exerciseA:
         [
             {
                 add_exercise: {
@@ -41,7 +41,7 @@ const RoutineDaySchema = new Schema({
 
             }
         ],
-    // Day 2
+    // Workout B
     exercise21: {
         type: String,
         required: true,
@@ -57,11 +57,7 @@ const RoutineDaySchema = new Schema({
         required: true,
         max: 40
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    add_exercise2:
+    add_exerciseB:
         [
             {
                 add_exercise: {
@@ -78,7 +74,34 @@ const RoutineDaySchema = new Schema({
                 },
 
             }
-        ]
+        ],
+
+    add_exerciseDay:
+        [
+            {
+                week_day:{
+                    type: String,
+                    required: true
+                },
+                add_exercise: {
+                    type: String,
+                    required: true
+                },
+                add_exercise_kg: {
+                    type: Number,
+                    required: true
+                },
+                add_exercise_reps: {
+                    type: Number,
+                    required: true
+                },
+
+            }
+        ],
+    date: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 module.exports = RoutineDay = mongoose.model('routinedays', RoutineDaySchema);

@@ -57,7 +57,8 @@ router.post('/update', passport.authenticate('jwt', {session: false}), (req, res
         finished: req.body.finished,
     };
 
-    Routine.findOne({user: req.user.id}, function (err, routine) {
+    Routine.findOne(
+        {user: req.user.id}, function (err, routine) {
         if (err) {
             return res.status(404).json(err);
         }

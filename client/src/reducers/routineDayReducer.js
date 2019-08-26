@@ -1,4 +1,4 @@
-import {GET_ROUTINE_DAY, LOADING_ROUTINE_DAY, SAVE_ROUTINE_DAY, STOP_LOADING_ROUTINE_DAY,} from '../actions/types';
+import {GET_ROUTINE_DAY, LOADING_ROUTINE_DAY, SAVE_ROUTINE_DAY, SAVE_ADD_AB, STOP_LOADING_ROUTINE_DAY,} from '../actions/types';
 
 const initialState = {
     routineDay: {},
@@ -24,6 +24,12 @@ export default function (state = initialState, action) {
                 loading: false,
             };
         case GET_ROUTINE_DAY:
+            return {
+                ...state,
+                routineDay: action.payload,
+                loading: false,
+            };
+        case SAVE_ADD_AB:
             return {
                 ...state,
                 routineDay: action.payload,

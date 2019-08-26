@@ -314,36 +314,18 @@ class Navbar extends Component {
                                 button
                                 onClick={() => this.onSetDrawerOpen(this.state.open)}
                                 component={this.renderLink}
-                                to="/plan"
-                            >
-                                <ListItemText primary={"Routine Plan"}/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/plan/5x5"
-                            >
-                                <ListItemText primary={"5x5 Plan"}/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/routineday"
-                            >
-                                <ListItemText primary="Routine Main Exercises"/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
                                 to="/routineexercise"
                             >
                                 <ListItemText primary="Routine Exercises"/>
+                            </ListItem>
+
+                            <ListItem
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/plan"
+                            >
+                                <ListItemText primary={"Routine Plan"}/>
                             </ListItem>
 
                             <ListItem
@@ -362,15 +344,6 @@ class Navbar extends Component {
                                 to="/routine/update"
                             >
                                 <ListItemText primary="Routine Update"/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/routine/calendar"
-                            >
-                                <ListItemText primary="Routine Calendar"/>
                             </ListItem>
 
                             <ListItem

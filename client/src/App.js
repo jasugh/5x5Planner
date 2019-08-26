@@ -22,15 +22,11 @@ import {logoutUser, setCurrentUser} from "./actions/authActions";
 import Setting from "./components/settings/Settings";
 import Category from "./components/basicData/Category";
 import Exercise from "./components/basicData/Exercise";
+import RoutineExercise from "./components/exercise/Exercise";
 import RoutinePlan from './components/routines/RoutinePlan';
 import RoutineList from './components/routines/RoutineList';
-import RoutineDay from "./components/routines/RoutineDay";
 import RoutineTable from "./components/routines/RoutineTable";
-import RoutineCalendar from "./components/routines/RoutineCalendar";
-import Workout from "./components/workout/Workout";
 import WorkoutCalendar from "./components/workout/WorkoutCalendar";
-import RoutineExercise from "./components/exercise/Exercise";
-import Plan5X5 from "./components/plan5x5/Plan5x5";
 
 
 const theme = createMuiTheme({
@@ -112,13 +108,9 @@ class App extends Component {
                                     <PrivateRoute exact path="/exercise" component={Exercise}/>
                                     <PrivateRoute exact path="/category" component={Category}/>
                                     <PrivateRoute exact path="/plan" component={RoutinePlan}/>
-                                    <PrivateRoute exact path="/plan/5x5" component={Plan5X5}/>
-                                    <PrivateRoute exact path="/routineday" component={RoutineDay}/>
                                     <PrivateRoute exact path="/routineexercise" component={RoutineExercise}/>
                                     <PrivateRoute exact path="/routine/list" component={RoutineList}/>
                                     <PrivateRoute exact path="/routine/update" component={RoutineTable}/>
-                                    <PrivateRoute exact path="/routine/calendar" component={RoutineCalendar}/>
-                                    <PrivateRoute exact path="/workout" component={Workout}/>
                                     <PrivateRoute exact path="/workout/calendar" component={WorkoutCalendar}/>
                                 </Switch>
                             </div>

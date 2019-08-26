@@ -10,14 +10,6 @@ const SettingsSchema = new Schema({
         type: String,
         required: true
     },
-    restTime: {
-        type: Number,
-        required: true,
-    },
-    weightIncrement: {
-        type: Number,
-        required: true,
-    },
     date: {
         type: Date,
         default:

@@ -12,10 +12,7 @@ import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import isEmpty from "../../validation/is-empty";
@@ -41,45 +38,24 @@ const styles = theme => ({
         },
     },
     buttonPadding: {
-        margin: 10,
-        width: 180,
+        margin: 5,
+        width: 110,
         [theme.breakpoints.down("sm")]: {
-            margin: 10,
-            width: 140,
+            margin: 5,
+            width: 100,
         }
     },
-    buttonColor: {
-        background: theme.palette.primary.main,
-        color: "white",
+    typography: {
+        paddingTop: 10,
+        paddingLeft: 25,
     },
-    heading: {
-        fontSize: theme.typography.pxToRem(15),
+    card: {
+        marginTop: 10
     },
-    secondaryHeading: {
-        fontSize: theme.typography.pxToRem(15),
-        color: theme.palette.text.secondary,
-    },
-    icon: {
-        verticalAlign: 'bottom',
-        height: 20,
-        width: 20,
-    },
-    details: {
-        alignItems: 'center',
-    },
-    column: {
-        flexBasis: '33.33%',
-    },
-    helper: {
-        borderLeft: `2px solid ${theme.palette.divider}`,
-        padding: theme.spacing(1, 2),
-    },
-    link: {
-        color: theme.palette.primary.main,
-        textDecoration: 'none',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
+    fab: {
+        position: 'fixed',
+        top: theme.spacing(10),
+        right: theme.spacing(2),
     },
 });
 
@@ -145,10 +121,10 @@ class Category extends Component {
     }
 
     onDelete() {
-            const categoryData = {
-                id: this.state.id,
-            };
-            this.props.deleteCategory(categoryData);
+        const categoryData = {
+            id: this.state.id,
+        };
+        this.props.deleteCategory(categoryData);
 
         this.setState({
             id: '',
@@ -202,12 +178,15 @@ class Category extends Component {
             categoryView.push(
                 <div key={"a"}>
                     <Grid container justify="center">
-                        <Typography style={{paddingRight: 40, paddingTop: 10}} align={"center"} color="primary"
-                                    variant="h6">
-                            Exercise Categories
+                        <Typography
+                            className={classes.typography}
+                            color="primary"
+                            variant="h6">
+                            Categories
                         </Typography>
 
                         <Fab
+                            className={classes.fab}
                             color="primary"
                             aria-label="add"
                             onClick={this.onAdd}
@@ -226,57 +205,55 @@ class Category extends Component {
             if (this.state.showAdd || errors.name) {
                 categoryView.push(
                     <Grid style={{paddingTop: 20}} container justify="center" key={"b"}>
-                        <Card className={classes.card} elevation={2}>
-                            <CardContent>
+                        <Grid item xs={12}>
+                            <Typography
+                                variant="subtitle2"
+                                color="primary"
+                            >
+                                Category:
+                            </Typography>
+                            <TextField
+                                value={this.state.name}
+                                error={!isEmpty(errors.name)}
+                                helperText={errors.name}
+                                onChange={this.onChange}
+                                required
+                                id="category"
+                                name="name"
+                                fullWidth
+                            />
+                        </Grid>
 
-                                <Typography
-                                    variant="subtitle2"
-                                    color="primary"
-                                >
-                                    Category:
-                                </Typography>
-                                <TextField
-                                    value={this.state.name}
-                                    error={!isEmpty(errors.name)}
-                                    helperText={errors.name}
-                                    onChange={this.onChange}
-                                    required
-                                    id="category"
-                                    name="name"
-                                    fullWidth
-                                />
-
-                            </CardContent>
-                            <CardActions className={classes.buttonJustify}>
-                                <Button
-                                    size={"medium"}
-                                    variant={"contained"}
-                                    color="primary"
-                                    onClick={this.onSave}
-                                    className={classes.buttonPadding}>
-                                    {button_text}
-                                </Button>
-                                <Button
-                                    className={classes.buttonPadding}
-                                    disabled={!this.state.id}
-                                    size={"medium"}
-                                    variant={"contained"}
-                                    color="secondary"
-                                    onClick={this.onDelete}
-                                >
-                                    delete
-                                </Button>
-                                <Button
-                                    className={classes.buttonPadding}
-                                    size={"medium"}
-                                    variant={"contained"}
-                                    color="inherit"
-                                    onClick={this.onCancel}
-                                >
-                                    cancel
-                                </Button>
-                            </CardActions>
-                        </Card>
+                        <Grid style={{paddingTop: 40}} container justify="space-between">
+                            <Button
+                                className={classes.buttonPadding}
+                                size={"medium"}
+                                variant={"contained"}
+                                color="primary"
+                                onClick={this.onSave}
+                            >
+                                {button_text}
+                            </Button>
+                            <Button
+                                className={classes.buttonPadding}
+                                disabled={!this.state.id}
+                                size={"medium"}
+                                variant={"contained"}
+                                color="secondary"
+                                onClick={this.onDelete}
+                            >
+                                delete
+                            </Button>
+                            <Button
+                                className={classes.buttonPadding}
+                                size={"medium"}
+                                variant={"contained"}
+                                color="inherit"
+                                onClick={this.onCancel}
+                            >
+                                cancel
+                            </Button>
+                        </Grid>
                     </Grid>
                 );
             } else {
@@ -286,6 +263,7 @@ class Category extends Component {
                             return (
                                 <ListItem
                                     divider
+
                                     key={index}
                                     index={index}
                                     button

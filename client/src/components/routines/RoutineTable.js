@@ -16,7 +16,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
-import Checkbox from "@material-ui/core/Checkbox";
 
 import * as moment from 'moment';
 import isEmpty from "../../validation/is-empty";
@@ -86,7 +85,7 @@ class RoutineTable extends Component {
             routine_errors: {},
             update: false,
             changed: false,
-            initFinished: [],
+            // initFinished: [],
         });
 
         this.onChecked = this.onChecked.bind(this);
@@ -112,18 +111,11 @@ class RoutineTable extends Component {
         if (props.routine.routine.workouts !== undefined) {
             if (props.routine.routine.workouts !== state.workouts) {
 
-                let f = [];
-                for (let i = 0; i < props.routine.routine.workouts.length; i++) {
-                    f.push(props.routine.routine.workouts[i].finished);
-                }
-
                 return {
                     workouts: props.routine.routine.workouts,
-                    initFinished: f
                 };
             }
         }
-
         return null;
     };
 
@@ -148,7 +140,6 @@ class RoutineTable extends Component {
             exercise3: this.state.workouts[this.state.expandedPanel].exercise3,
             exercise3_kg: this.state.workouts[this.state.expandedPanel].exercise3_kg,
             exercise3_reps: this.state.workouts[this.state.expandedPanel].exercise3_reps,
-            finished: this.state.workouts[this.state.expandedPanel].finished,
         };
 
         this.setState({changed: false, update: false});
@@ -158,12 +149,6 @@ class RoutineTable extends Component {
 
     onCheckUpdate = name => event => {
         this.setState({[name]: event.target.checked});
-    };
-
-    onCheckFinished = name => event => {
-        let wo = this.state.workouts;
-        wo[this.state.expandedPanel][name] = event.target.checked;
-        this.setState({workouts: wo});
     };
 
     render() {
@@ -355,49 +340,49 @@ class RoutineTable extends Component {
 
                                     </ExpansionPanelDetails>
 
-                                    <ExpansionPanelDetails className={classes.details}>
-                                        <div className={classes.column}>
-                                            <Typography
-                                                className={classes.exerciseHeader}
-                                            >
-                                                Is this workout finished?
-                                            </Typography>
-                                        </div>
-                                        <div className={classes.column}>
-                                            <Checkbox
-                                                className={classes.boxPadding}
-                                                onChange={this.onCheckFinished("finished")}
-                                                checked={this.state.workouts[index].finished}
-                                                value="finished"
-                                                color="primary"
-                                                disabled={this.state.initFinished[index]}
-                                            />
-                                        </div>
-                                        <div className={classes.column}>
+                                    {/*<ExpansionPanelDetails className={classes.details}>*/}
+                                    {/*    <div className={classes.column}>*/}
+                                    {/*        <Typography*/}
+                                    {/*            className={classes.exerciseHeader}*/}
+                                    {/*        >*/}
+                                    {/*            Is this workout finished?*/}
+                                    {/*        </Typography>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={classes.column}>*/}
+                                    {/*        <Checkbox*/}
+                                    {/*            className={classes.boxPadding}*/}
+                                    {/*            onChange={this.onCheckFinished("finished")}*/}
+                                    {/*            checked={this.state.workouts[index].finished}*/}
+                                    {/*            value="finished"*/}
+                                    {/*            color="primary"*/}
+                                    {/*            disabled={this.state.initFinished[index]}*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={classes.column}>*/}
 
-                                        </div>
+                                    {/*    </div>*/}
 
-                                        <div className={classes.column}>
-                                            <Typography
-                                                className={classes.exerciseHeader}
-                                            >
-                                                Update exercises from this date onwards?
-                                            </Typography>
-                                        </div>
-                                        <div className={classes.column}>
-                                            <Checkbox
-                                                className={classes.boxPadding}
-                                                onChange={this.onCheckUpdate("update")}
-                                                checked={this.state.update}
-                                                value="update"
-                                                color="primary"
-                                                disabled={!this.state.changed}
-                                            />
-                                        </div>
-                                        <div className={classes.column}>
+                                    {/*    <div className={classes.column}>*/}
+                                    {/*        <Typography*/}
+                                    {/*            className={classes.exerciseHeader}*/}
+                                    {/*        >*/}
+                                    {/*            Update exercises from this date onwards?*/}
+                                    {/*        </Typography>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={classes.column}>*/}
+                                    {/*        <Checkbox*/}
+                                    {/*            className={classes.boxPadding}*/}
+                                    {/*            onChange={this.onCheckUpdate("update")}*/}
+                                    {/*            checked={this.state.update}*/}
+                                    {/*            value="update"*/}
+                                    {/*            color="primary"*/}
+                                    {/*            disabled={!this.state.changed}*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={classes.column}>*/}
 
-                                        </div>
-                                    </ExpansionPanelDetails>
+                                    {/*    </div>*/}
+                                    {/*</ExpansionPanelDetails>*/}
 
                                     <Divider/>
 

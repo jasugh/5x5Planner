@@ -7,26 +7,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
-
-// import isEmpty from "../../validation/is-empty";
-
-import {
-    // clearErrors,
-    // deleteExercise,
-    getAllExercise,
-    // getExercise,
-    // saveExercise,
-    // updateExercise
-} from "../../actions/exerciseActions";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import CheckIcon from '@material-ui/icons/Check';
-// import RemoveIcon from '@material-ui/icons/Remove';
 
+import {getRoutineDay, saveAdditionalAB} from '../../actions/routineDayActions';
+import {getAllExercise} from "../../actions/exerciseActions";
 
 const styles = theme => ({
     buttonPadding: {
@@ -57,76 +46,105 @@ const styles = theme => ({
     }
 });
 
-
 class ExerciseForAb extends Component {
     constructor(props) {
         super(props);
         this.state = ({
             errors: {},
 
-            addExerciseA: [],
-            addExerciseB: [],
+            add_exerciseA: [],
+            add_exerciseB: [],
             exerciseA: '',
             exerciseB: '',
         });
 
         this.onChange = this.onChange.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.onDeleteClick = this.onDeleteClick.bind(this);
     }
 
-
     componentDidMount() {
+        this.props.getRoutineDay();
         this.props.getAllExercise();
-    };
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.errors !== state.errors) {
+            return {errors: props.errors};
+        }
+
+        if (props.routineDay.routineDay !== state.routineDay) {
+            const routineDay = props.routineDay.routineDay;
+
+            return ({
+                add_exerciseA: routineDay.add_exerciseA,
+                add_exerciseB: routineDay.add_exerciseB,
+                routineDay: props.routineDay.routineDay
+            });
+        }
+        return null;
+    }
 
     onChange(event, ab) {
 
         if (ab === 'a') {
-            const e = this.state.addExerciseA;
+            const e = this.state.add_exerciseA;
             const i = e.findIndex(e => e === event.target.value);
 
             if (i < 0 || e.length === 0) {
                 e.push(event.target.value);
-                this.setState({addExerciseA: e});
+                this.setState({add_exerciseA: e});
             }
         }
 
         if (ab === 'b') {
-            const e = this.state.addExerciseB;
+            const e = this.state.add_exerciseB;
             const i = e.findIndex(e => e === event.target.value);
 
             if (i < 0 || e.length === 0) {
                 e.push(event.target.value);
-                this.setState({addExerciseB: e});
+                this.setState({add_exerciseB: e});
             }
         }
     };
 
+    onSave() {
+        const addAB = {
+            add_exerciseA: this.state.add_exerciseA,
+            add_exerciseB: this.state.add_exerciseB,
+        };
+
+        this.props.saveAdditionalAB(addAB);
+    }
+
     onDeleteClick(index, ab) {
         if (ab === 'a') {
-            const e = this.state.addExerciseA;
+            const e = this.state.add_exerciseA;
             e.splice(index, 1);
-            this.setState({addExerciseA: e});
+            this.setState({add_exerciseA: e});
         }
 
         if (ab === 'b') {
-            const e = this.state.addExerciseB;
+            const e = this.state.add_exerciseB;
             e.splice(index, 1);
-            this.setState({addExerciseB: e});
+            this.setState({add_exerciseB: e});
         }
     }
 
     render() {
         const {classes} = this.props;
-        const {loading, exercise} = this.props.exercise;
+        const {routineDay} = this.props.routineDay;
+        const routineDay_loading = this.props.routineDay.loading;
+        const {exercise} = this.props.exercise;
+        const {exercise_loading} = this.props.exercise.loading;
         // const {errors} = this.state;
 
         let button_text = 'add';
-        // routineDay._id ? button_text = 'update' : button_text = 'add';
+        routineDay.add_exerciseA ? button_text = 'update' : button_text = 'add';
 
         let exerciseView = [];
 
-        if (!loading) {
+        if (!routineDay_loading && !exercise_loading) {
             exerciseView.push(
                 <Grid container justify="center">
                     <Grid item xs={12}>
@@ -176,7 +194,7 @@ class ExerciseForAb extends Component {
             exerciseView.push(
                 <Grid item xs={12}>
                     <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
-                        {this.state.addExerciseA.map((a_row, index) => {
+                        {this.state.add_exerciseA.map((a_row, index) => {
                             return (
                                 <ListItem
                                     className={classes.listItem}
@@ -187,8 +205,7 @@ class ExerciseForAb extends Component {
                                     selected={this.state.selectedIndex === index}
                                     // onClick={event => this.onListItemClick(event, index)}
                                 >
-                                    <ListItemText primary={a_row}/>
-
+                                    <ListItemText primary={a_row.add_exercise}/>
                                     <ListItemSecondaryAction>
                                         <IconButton
                                             onClick={event => this.onDeleteClick(index, 'a')}
@@ -200,8 +217,6 @@ class ExerciseForAb extends Component {
                                             />
                                         </IconButton>
                                     </ListItemSecondaryAction>
-
-
                                 </ListItem>
                             )
                         })}
@@ -258,7 +273,7 @@ class ExerciseForAb extends Component {
             exerciseView.push(
                 <Grid item xs={12}>
                     <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
-                        {this.state.addExerciseB.map((b_row, index) => {
+                        {this.state.add_exerciseB.map((b_row, index) => {
                             return (
                                 <ListItem
                                     className={classes.listItem}
@@ -269,7 +284,7 @@ class ExerciseForAb extends Component {
                                     selected={this.state.selectedIndex === index}
                                     // onClick={event => this.onListItemClick(event, index)}
                                 >
-                                    <ListItemText primary={b_row}/>
+                                    <ListItemText primary={b_row.add_exercise}/>
 
                                     <ListItemSecondaryAction>
                                         <IconButton
@@ -290,25 +305,16 @@ class ExerciseForAb extends Component {
                 </Grid>
             );
 
-
             exerciseView.push(
                 <div>
                     <Grid container style={{width: "auto"}} justify="center">
                         <Button
-                            size={"medium"}
+                            className={classes.buttonPadding}
                             variant={"contained"}
                             color="primary"
-                            onClick={this.onSubmit}
-                            className={classes.buttonPadding}>
+                            onClick={this.onSave}
+                        >
                             {button_text}
-                        </Button>
-                        <Button
-                            size={"medium"}
-                            variant={"contained"}
-                            color="inherit"
-                            onClick={this.onCancel}
-                            className={classes.buttonPadding}>
-                            cancel
                         </Button>
                     </Grid>
                 </div>
@@ -317,7 +323,7 @@ class ExerciseForAb extends Component {
 
         return (
             <div>
-                {loading ? (
+                {routineDay_loading || exercise_loading ? (
                         <Grid container justify="center">
                             <CircularProgress className={classes.progress}/>
                         </Grid>
@@ -334,15 +340,21 @@ class ExerciseForAb extends Component {
 }
 
 ExerciseForAb.propTypes = {
+    getRoutineDay: PropTypes.func.isRequired,
+    saveAdditionalAB: PropTypes.func.isRequired,
     getAllExercise: PropTypes.func.isRequired,
+    routineDay: PropTypes.object.isRequired,
     exercise: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+    routineDay: state.routineDay,
     exercise: state.exercise,
-    errors: state.errors
+    errors: state.errors,
 });
 
 export default connect(mapStateToProps, {
-    getAllExercise,
+    getRoutineDay,
+    saveAdditionalAB,
+    getAllExercise
 })(withStyles(styles)(ExerciseForAb));

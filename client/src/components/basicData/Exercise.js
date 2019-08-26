@@ -51,11 +51,19 @@ const styles = theme => ({
             width: 100,
         }
     },
-
+    typography: {
+        paddingTop: 10,
+        paddingLeft: 25,
+    },
     nested: {
         paddingLeft: theme.spacing(4),
         // color: theme.palette.primary.main,
         background: theme.palette.primary.A100,
+    },
+    fab: {
+        position: 'fixed',
+        top: theme.spacing(10),
+        right: theme.spacing(2),
     },
 });
 
@@ -219,36 +227,29 @@ class Exercise extends Component {
             exerciseView.push(
                 <div key={"a"}>
                     <Grid container justify="center">
-                        <Grid xs={4} item>
-                        </Grid>
-                        <Grid xs={4} item>
-                            <Typography
-                                style={{paddingTop: 10}}
-                                align={"center"}
-                                color="primary"
-                                variant="h6"
-                            >
-                                Exercises
-                            </Typography>
-                        </Grid>
-                        <Grid xs={2} item>
-                        </Grid>
+                        <Typography
+                            style={{paddingTop: 10}}
+                            align={"center"}
+                            color="primary"
+                            variant="h6"
+                        >
+                            Exercises
+                        </Typography>
 
-                        <Grid item xs={2} justify="flex-end">
-                            <Fab
-                                style={{position: 'fixed'}}
-                                color="primary"
-                                aria-label="add"
-                                onClick={this.onAdd}
-                                disabled={this.state.showAdd}
-                            >
-                                <Tooltip title={"Add new exercise"}>
-                                    <AddIcon
-                                        color="inherit"
-                                    />
-                                </Tooltip>
-                            </Fab>
-                        </Grid>
+                        <Fab
+                            className={classes.fab}
+                            style={{position: 'fixed'}}
+                            color="primary"
+                            aria-label="add"
+                            onClick={this.onAdd}
+                            disabled={this.state.showAdd}
+                        >
+                            <Tooltip title={"Add new exercise"}>
+                                <AddIcon
+                                    color="inherit"
+                                />
+                            </Tooltip>
+                        </Fab>
                     </Grid>
                 </div>
             );

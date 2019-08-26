@@ -44,7 +44,7 @@ const styles = theme => ({
         maxWidth: 500,
         padding: '5px'                     //padding inside card
     },
-    grid:{
+    grid: {
         width: 'auto',
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
@@ -52,8 +52,9 @@ const styles = theme => ({
     header: {
         textAlign: 'center',
         color: theme.palette.primary.main,
-        fontSize: 25,
-        fontWeight: 590
+        fontSize: '1.25rem',
+        lineHeight: 1.6,
+        fontWeight: 500
     },
     kg: {
         width: 100,
@@ -103,6 +104,7 @@ class Plan extends Component {
     constructor(props) {
         super(props);
         this.state = ({
+            plan: {},
             plan_name: '',
             plan_type: 'beginner',
             monday: false,
@@ -134,7 +136,6 @@ class Plan extends Component {
             exercise21: '',
             exercise22: '',
             exercise23: '',
-            routineDStateInit: false,
         });
 
         this.onChange = this.onChange.bind(this);
@@ -158,7 +159,6 @@ class Plan extends Component {
             return {errors: props.errors};
         }
 
-
         if (props.routineDay !== state.routineDay && !state.routineDStateInit) {
             return {
                 // Day 1
@@ -173,7 +173,8 @@ class Plan extends Component {
             }
         }
 
-        if (props.plan.plan !== state.plan && !state.planStateInit) {
+        if (props.plan.plan !== state.plan) {
+            // if (props.plan.plan !== state.plan && !state.planStateInit) {
 
             if (props.plan.plan._id) {
 
@@ -195,6 +196,7 @@ class Plan extends Component {
                 }
 
                 return {
+                    plan: props.plan.plan,
                     plan_name: props.plan.plan.plan_name,
                     plan_type: props.plan.plan.plan_type,
                     monday: props.plan.plan.monday,
@@ -247,7 +249,6 @@ class Plan extends Component {
             barbell_row_max_reps: this.state.barbell_row_max_reps,
             start_date: this.state.start_date,
         };
-        this.setState({planStateInit: false});
 
         this.props.savePlan(planData, this.props.history);
     };
@@ -284,9 +285,6 @@ class Plan extends Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    // onSelect = name => event => {
-    //     this.setState({[name]: event.target.checked});
-    // };
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
@@ -317,7 +315,7 @@ class Plan extends Component {
         if (!loading) {
             panelLines =
                 <Grid className={classes.grid} container justify="center">
-                    <Card className={classes.card} elevation={2}>
+                    <Card className={classes.card} elevation={0}>
                         <CardHeader
                             classes={{title: classes.header}}
                             title={"Routine Plan"}
@@ -325,7 +323,8 @@ class Plan extends Component {
 
                         <CardContent>
                             <Typography
-                                variant={"subtitle1"}
+                                variant="subtitle2"
+                                color="primary"
                             >
                                 Select 3 training week days
                             </Typography>
@@ -436,8 +435,9 @@ class Plan extends Component {
                             </FormGroup>
 
                             <Typography
-                                // className={classes.startDate}
-                                variant={"subtitle1"}
+                                style={{paddingTop: 10}}
+                                color="primary"
+                                variant={"subtitle2"}
                             >
                                 Start date
                             </Typography>

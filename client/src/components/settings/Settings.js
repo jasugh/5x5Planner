@@ -6,16 +6,15 @@ import {connect} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import {getSettings, saveSettings} from "../../actions/settingActions";
+
 import isEmpty from "../../validation/is-empty";
 
 const styles = theme => ({
@@ -46,8 +45,6 @@ class Settings extends Component {
         super();
         this.state = ({
             dateFormat: '',
-            restTime: 0,
-            weightIncrement: 0,
 
             errors: {},
             settings: {},
@@ -70,8 +67,6 @@ class Settings extends Component {
         if (props.settings.settings !== state.settings) {
             return {
                 dateFormat: props.settings.settings.dateFormat,
-                restTime: props.settings.settings.restTime,
-                weightIncrement: props.settings.settings.weightIncrement,
                 settings: props.settings.settings,
             };
         }
@@ -85,8 +80,6 @@ class Settings extends Component {
     onSave(event) {
         const settingsData = {
             dateFormat: this.state.dateFormat,
-            restTime: this.state.restTime,
-            weightIncrement: this.state.weightIncrement
         };
 
         this.props.saveSettings(settingsData);
@@ -114,64 +107,6 @@ class Settings extends Component {
                             <Typography align={"center"} color="primary" variant="h6">
                                 Settings
                             </Typography>
-
-                            {/* Default Rest Time */}
-                            <Typography
-                                style={{paddingTop: 10}}
-                                variant="subtitle2"
-                                color="primary"
-                            >
-                                Default Rest Time:
-                            </Typography>
-                            <TextField
-                                style={{width: 100}}
-                                value={this.state.restTime}
-                                error={!isEmpty(errors.restTime)}
-                                helperText={errors.restTime}
-                                name="restTime"
-                                type="number"
-                                onChange={this.onChange}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">sec</InputAdornment>,
-                                    inputProps: {
-                                        min: "1",
-                                        max: "36000",
-                                        step: "1",
-                                    }
-                                }}
-                            />
-
-                            <br/>
-                            <br/>
-
-                            {/* Default Weight Increment */}
-                            <Typography
-                                // style={{paddingLeft: 5}}
-                                variant="subtitle2"
-                                color="primary"
-                            >
-                                Default Weight Increment:
-                            </Typography>
-                            <TextField
-                                style={{width: 100}}
-                                value={this.state.weightIncrement}
-                                error={!isEmpty(errors.weightIncrement)}
-                                helperText={errors.weightIncrement}
-                                name="weightIncrement"
-                                type="number"
-                                onChange={this.onChange}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">kg</InputAdornment>,
-                                    inputProps: {
-                                        min: "0.5",
-                                        max: "20",
-                                        step: "0.5"
-                                    }
-                                }}
-                            />
-
-                            <br/>
-                            <br/>
 
                             {/* Date Fromat */}
                             <Typography
