@@ -13,7 +13,6 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Dashboard from "./components/layout/Dashboard";
-import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 
 import './App.css';
@@ -42,30 +41,6 @@ const theme = createMuiTheme({
             }
         }
     },
-
-    // blue 2196f3
-    // bluegrey = blueGrey
-
-    // palette: {
-    //     primary: {
-    //         light: '#fff',
-    //         main: '#2196F3',
-    //         dark: '#1565c0'
-    //     },
-    // },
-    // typography: {
-    //     useNextVariants: true
-    // }
-
-    // overrides: {
-    //     MuiDivider: {
-    //         root: {
-    //             marginTop: 6,
-    //             height: 2,
-    //             backgroundColor: '#607d8b',
-    //         },
-    //     },
-    // },
 });
 
 
@@ -100,7 +75,6 @@ class App extends Component {
                             <Navbar/>
                             <Route exact path="/" component={Landing}/>
                             <div className="container">
-                                <Route exact path="/register" component={Register}/>
                                 <Route exact path="/login" component={Login}/>
                                 <Switch>
                                     <PrivateRoute exact path="/dashboard" component={Dashboard}/>

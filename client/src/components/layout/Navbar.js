@@ -189,12 +189,6 @@ class Navbar extends Component {
                 <Typography noWrap>
                     <Button
                         component={this.renderLink}
-                        to="/register"
-                        color="inherit">
-                        Sign Up
-                    </Button>
-                    <Button
-                        component={this.renderLink}
                         to="/login"
                         color="inherit">
                         Login

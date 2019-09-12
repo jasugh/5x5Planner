@@ -55,14 +55,6 @@ class Landing extends Component {
                         </CardContent>
                         <CardActions className={classes.buttonJustify}>
                             <Button
-                                component={this.renderLink} to="/register"
-                                size={"medium"}
-                                variant={"contained"}
-                                color="primary"
-                                className={classes.buttonPadding}>
-                                Sign Up
-                            </Button>
-                            <Button
                                 component={this.renderLink} to="/login"
                                 size={"medium"}
                                 variant={"contained"}
