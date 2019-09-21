@@ -302,12 +302,12 @@ class Plan extends Component {
         const {routineDay} = this.props.routineDay;
 
         // let weightsText = '';
-        let button_text = 'add plan';
+        let button_text = 'add';
         let plan_exist = false;
 
         if (plan._id) {
             plan_exist = true;
-            button_text = 'update plan'
+            button_text = 'update'
         }
 
         let panelLines;

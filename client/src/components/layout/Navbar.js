@@ -14,16 +14,19 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {logoutUser} from "../../actions/authActions";
 import {Link as RouterLink} from 'react-router-dom';
 
 import Alarm from '@material-ui/icons/Alarm';
 import Tooltip from '@material-ui/core/Tooltip';
 import soundfile from "../workout/Twin-bell-alarm-clock.mp3";
 import {Grid} from "@material-ui/core";
-
-import {stopRestTimer} from '../../actions/restTimerActions';
 import LinearProgress from "@material-ui/core/LinearProgress";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+
+import {logoutUser} from "../../actions/authActions";
+import {stopRestTimer} from '../../actions/restTimerActions';
 
 const drawerWidth = 200;
 
@@ -67,7 +70,10 @@ const styles = theme => ({
         [theme.breakpoints.down("sm")]: {
             marginTop: 56
         }
-    }
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
 });
 
 class Navbar extends Component {
@@ -76,6 +82,7 @@ class Navbar extends Component {
         this.state = {
             open: false,
             open_list: false,
+            collapse: true,
             variant: 'persistent',
 
             //Timer
@@ -148,10 +155,15 @@ class Navbar extends Component {
 
     onSetDrawerOpen = () => {
         this.setState({open: !this.state.open});
+        this.setState({collapse: false});
     };
 
     onSetOpenList = () => {
         this.setState(state => ({open_list: !state.open_list}));
+    };
+
+    handleClick = () => {
+        this.setState({collapse: !this.state.collapse});
     };
 
     onLogoutClick(event) {
@@ -277,40 +289,53 @@ class Navbar extends Component {
                     >
                         <List className={classes.paddingTop}>
 
+                            {/*<ListItem*/}
+                            {/*    button*/}
+                            {/*    onClick={() => this.onSetDrawerOpen(this.state.open)}*/}
+                            {/*    component={this.renderLink}*/}
+                            {/*    to="/setting"*/}
+                            {/*>*/}
+                            {/*    <ListItemText primary={"Settings"}/>*/}
+                            {/*</ListItem>*/}
+
                             <ListItem
                                 button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/setting"
-                            >
-                                <ListItemText primary={"Settings"}/>
+                                onClick={this.handleClick}>
+                                <ListItemText primary="Basic Data"/>
+                                {this.state.collapse ? <ExpandLess/> : <ExpandMore/>}
                             </ListItem>
+
+                            <Collapse in={this.state.collapse} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    <ListItem
+                                        className={classes.nested}
+                                        button
+                                        onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                        component={this.renderLink}
+                                        to="/category"
+                                    >
+                                        <ListItemText primary={"Categories"}/>
+                                    </ListItem>
+
+                                    <ListItem
+                                        className={classes.nested}
+                                        button
+                                        onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                        component={this.renderLink}
+                                        to="/exercise"
+                                    >
+                                        <ListItemText primary={"Exercises"}/>
+                                    </ListItem>
+                                </List>
+                            </Collapse>
 
                             <ListItem
                                 button
                                 onClick={() => this.onSetDrawerOpen(this.state.open)}
                                 component={this.renderLink}
-                                to="/category"
+                                to="/exercise5x5"
                             >
-                                <ListItemText primary={"Categories"}/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/exercise"
-                            >
-                                <ListItemText primary={"Exercises"}/>
-                            </ListItem>
-
-                            <ListItem
-                                button
-                                onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                component={this.renderLink}
-                                to="/routineexercise"
-                            >
-                                <ListItemText primary="Routine Exercises"/>
+                                <ListItemText primary="5x5 Exercises"/>
                             </ListItem>
 
                             <ListItem
@@ -320,6 +345,24 @@ class Navbar extends Component {
                                 to="/plan"
                             >
                                 <ListItemText primary={"Routine Plan"}/>
+                            </ListItem>
+
+                            <ListItem
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/additionalexercise"
+                            >
+                                <ListItemText primary="Additional Exercises"/>
+                            </ListItem>
+
+                            <ListItem
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/routine/create"
+                            >
+                                <ListItemText primary="Routine Create"/>
                             </ListItem>
 
                             <ListItem

@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
 
+import isEmpty from "../../validation/is-empty";
 import {getRoutineDay, saveRoutineDay} from '../../actions/routineDayActions';
 import {getAllExercise} from "../../actions/exerciseActions";
 
@@ -43,7 +44,7 @@ class Exercise5x5 extends Component {
             exercise21: '',
             exercise22: '',
             exercise23: '',
-            errors: {},
+            // errors: {},
             routineDay: {},
 
             stateInitialized: false,
@@ -64,9 +65,9 @@ class Exercise5x5 extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.errors !== state.errors) {
-            return {errors: props.errors};
-        }
+        // if (props.errors !== state.errors) {
+        //     return {errors: props.errors};
+        // }
 
         if (props.routineDay.routineDay !== state.routineDay) {
             const routineDay = props.routineDay.routineDay;
@@ -118,7 +119,7 @@ class Exercise5x5 extends Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, errors} = this.props;
         const {routineDay, loading} = this.props.routineDay;
         const routineDay_loading = this.props.routineDay.loading;
         const {exercise} = this.props.exercise;
@@ -234,7 +235,7 @@ class Exercise5x5 extends Component {
                         native
                         fullWidth
                         value={this.state.exercise22}
-                        // error={!isEmpty(errors.category)}
+                        error={!isEmpty(errors.exercise22)}
                         onChange={this.onChange}
                         name="exercise22"
 

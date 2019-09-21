@@ -8,7 +8,6 @@ import AppBar from "@material-ui/core/AppBar/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import Exercise5x5 from "./Exercise5x5";
 import ExerciseForAB from "./ExerciseForAB";
 import ExerciseByDay from "./ExerciseByDay";
 import Box from "@material-ui/core/Box";
@@ -45,11 +44,11 @@ function a11yProps(index) {
 
 const styles = theme => ({});
 
-class Exercise extends Component {
+class AdditionalExercise extends Component {
     constructor(props) {
         super(props);
         this.state = ({
-            value: 'one',
+            value: 'two',
         });
     }
 
@@ -73,12 +72,12 @@ class Exercise extends Component {
                         id="value"
                         onChange={this.handleChange}
                         aria-label="wrapped label tabs example">
-                        <Tab
-                            value="one"
-                            label="Workout A B"
-                            wrapped
-                            {...a11yProps('one')}
-                        />
+                        {/*<Tab*/}
+                        {/*    value="one"*/}
+                        {/*    label="Workout A B"*/}
+                        {/*    wrapped*/}
+                        {/*    {...a11yProps('one')}*/}
+                        {/*/>*/}
                         <Tab
                             value="two"
                             label="Additional A B"
@@ -93,12 +92,12 @@ class Exercise extends Component {
                         />
                     </Tabs>
                 </AppBar>
-                <TabPanel
-                    value={value}
-                    index="one"
-                >
-                    <Exercise5x5/>
-                </TabPanel>
+                {/*<TabPanel*/}
+                {/*    value={value}*/}
+                {/*    index="one"*/}
+                {/*>*/}
+                {/*    <Exercise5x5/>*/}
+                {/*</TabPanel>*/}
                 <TabPanel
                     value={value}
                     index="two"
@@ -122,4 +121,4 @@ class Exercise extends Component {
     }
 }
 
-export default (withStyles(styles)(Exercise));
+export default (withStyles(styles)(AdditionalExercise));
