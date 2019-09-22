@@ -48,11 +48,11 @@ app.use('/api/exercise', exercise);
 if(process.env.NODE_ENV === 'production'){
     // Set static folder
  app.use(express.static('client/build'));
+
  app.get('*', (res, req) => {
      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
  });
 }
-
 
 
 const port = process.env.PORT || 5000;
