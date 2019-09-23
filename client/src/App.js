@@ -45,7 +45,6 @@ const theme = createMuiTheme({
     },
 });
 
-
 // Check for token
 if (localStorage.jwtToken) {
     // Set auth token to header auth
