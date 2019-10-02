@@ -169,7 +169,7 @@ class ExerciseByDay extends Component {
     render() {
         const {classes} = this.props;
         const {routineDay} = this.props.routineDay;
-        const {exercise} = this.props.exercise;
+        const {exercises} = this.props.exercise;
         const exercise_loading = this.props.exercise.loading;
         const plan_loading = this.props.plan.loading;
 
@@ -242,7 +242,7 @@ class ExerciseByDay extends Component {
                             <option value="">
                                 Select exercise...
                             </option>
-                            {exercise.map((row, index) => {
+                            {exercises.map((row, index) => {
                                 return (
                                     <option key={row.name} value={row.name}>
                                         {row.name}

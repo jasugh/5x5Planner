@@ -30,7 +30,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-import {updateWorkout} from '../../actions/workoutActions';
+import {updateWorkout, clearSelectedWorkout} from '../../actions/workoutActions';
 import {startRestTimer} from '../../actions/restTimerActions';
 import isEmpty from "../../validation/is-empty";
 
@@ -224,6 +224,10 @@ class Workout extends Component {
         return null;
     };
 
+    componentWillUnmount() {
+        this.props.clearSelectedWorkout();
+    }
+
     onChange(event) {
         this.setState({[event.target.name]: event.target.value});
     };
@@ -378,7 +382,7 @@ class Workout extends Component {
     };
 
     startTimer() {
-        this.props.startRestTimer();
+        this.props.startRestTimer(this.props.exercise.exercise.restTime);
 
         //Check if all exercises are finished if yes -> go back
         let s = this.state.workout.exercises[0].sets;
@@ -623,12 +627,12 @@ class Workout extends Component {
                                         >
                                             <TableCell className={classes.noBorder}>
                                                 <IconButton
-                                                className={sets_row.comment.length === 0 ? classes.noteAddColorLight : classes.noteAddColorDark}
-                                                style={{padding: 0}}
-                                                onClick={this.onOpenDialog.bind(this, i)}
-                                            >
-                                                <NoteAdd/>
-                                            </IconButton>
+                                                    className={sets_row.comment.length === 0 ? classes.noteAddColorLight : classes.noteAddColorDark}
+                                                    style={{padding: 0}}
+                                                    onClick={this.onOpenDialog.bind(this, i)}
+                                                >
+                                                    <NoteAdd/>
+                                                </IconButton>
                                             </TableCell>
                                             <TableCell
                                                 className={classes.noBorder}
@@ -796,10 +800,17 @@ class Workout extends Component {
 Workout.propTypes = {
     updateWorkout: PropTypes.func.isRequired,
     startRestTimer: PropTypes.func.isRequired,
+    clearSelectedWorkout: PropTypes.func.isRequired,
+    exercise: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    workout: state.workout
+    workout: state.workout,
+    exercise: state.exercise,
 });
 
-export default connect(mapStateToProps, {updateWorkout, startRestTimer})(withStyles(styles)(Workout));
+export default connect(mapStateToProps, {
+    updateWorkout,
+    startRestTimer,
+    clearSelectedWorkout
+})(withStyles(styles)(Workout));

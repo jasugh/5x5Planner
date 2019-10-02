@@ -167,7 +167,7 @@ class ExerciseForAb extends Component {
         const {classes} = this.props;
         const {routineDay} = this.props.routineDay;
         const routineDay_loading = this.props.routineDay.loading;
-        const {exercise} = this.props.exercise;
+        const {exercises} = this.props.exercise;
         const {exercise_loading} = this.props.exercise.loading;
         // const {errors} = this.state;
 
@@ -214,7 +214,7 @@ class ExerciseForAb extends Component {
                             <option value="">
                                 Select exercise...
                             </option>
-                            {exercise.map((row, index) => {
+                            {exercises.map((row, index) => {
                                 return (
                                     <option key={row.name} value={row.name}>
                                         {row.name}
@@ -294,7 +294,7 @@ class ExerciseForAb extends Component {
                             <option value="">
                                 Select exercise...
                             </option>
-                            {exercise.map((row, index) => {
+                            {exercises.map((row, index) => {
                                 return (
                                     <option key={row.name} value={row.name}>
                                         {row.name}

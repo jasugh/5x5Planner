@@ -24,7 +24,7 @@ function TabPanel(props) {
             aria-labelledby={`wrapped-tab-${index}`}
             {...other}
         >
-            <Box p={3}>{children}</Box>
+            <Box p={2}>{children}</Box>
         </Typography>
     );
 }
@@ -42,7 +42,21 @@ function a11yProps(index) {
     };
 }
 
-const styles = theme => ({});
+// väri '#FF3CE9'
+
+const styles = theme => ({
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing(0),
+        marginRight: theme.spacing(0),
+        [theme.breakpoints.up(500 + theme.spacing(2) * 2)]: {
+            width: 500,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+});
+
 
 class AdditionalExercise extends Component {
     constructor(props) {
@@ -57,6 +71,7 @@ class AdditionalExercise extends Component {
     };
 
     render() {
+        const {classes} = this.props;
         const {value} = this.state;
 
         let tabLines = [];
@@ -65,19 +80,15 @@ class AdditionalExercise extends Component {
             <div key={"d"}>
                 <AppBar position="static">
                     <Tabs
+                        className={classes.layout}
                         variant="fullWidth"
                         centered
                         value={value}
                         name="value"
                         id="value"
                         onChange={this.handleChange}
-                        aria-label="wrapped label tabs example">
-                        {/*<Tab*/}
-                        {/*    value="one"*/}
-                        {/*    label="Workout A B"*/}
-                        {/*    wrapped*/}
-                        {/*    {...a11yProps('one')}*/}
-                        {/*/>*/}
+                        // aria-label="wrapped label tabs example"
+                    >
                         <Tab
                             value="two"
                             label="Additional A B"
@@ -92,12 +103,6 @@ class AdditionalExercise extends Component {
                         />
                     </Tabs>
                 </AppBar>
-                {/*<TabPanel*/}
-                {/*    value={value}*/}
-                {/*    index="one"*/}
-                {/*>*/}
-                {/*    <Exercise5x5/>*/}
-                {/*</TabPanel>*/}
                 <TabPanel
                     value={value}
                     index="two"

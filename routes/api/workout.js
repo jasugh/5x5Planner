@@ -18,92 +18,108 @@ const User = require('../../models/User');
 // @access  Private
 router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
-    const {errors, isValid} = validateWorkoutInput(req.body);
-
-    // Check Validation
-    if (!isValid) {
-        // Return any errors with 400 status
-        return res.status(400).json(errors);
-    }
-
     const workoutDate = req.body.workout_date;
 
-    Routine.findOne({user: req.user.id})
-        .then(routine => {
-            if (!routine) {
-                return res.status(404).json({user: 'There is no routine for this user.'})
-            }
+    Workout.findOne({
+        user: req.user.id,
+        workout_date: workoutDate
+    })
+        .then(workout => {
+            if (workout) {
+                // workout was already created -> return
+                const result_text = 'Workout found for date ' + moment(workoutDate).format('YYYY-MM-DD');
+                return res.status(200).json({msg: result_text})
+            } else {
 
-            const index = routine.workouts.findIndex(d => moment(d.date).format("YYYY-MM-DD") === moment(workoutDate).format("YYYY-MM-DD"));
 
-            if (index < 0) {
-                let text = 'There are no planned workouts for date ' + moment(workoutDate).format('YYYY-MM-DD');
-                return res.status(404).json({date: text})
-            }
+                const {errors, isValid} = validateWorkoutInput(req.body);
 
-            let exercises = [];
-
-            exercises.push(routine.workouts[index].exercise1);
-            exercises.push(routine.workouts[index].exercise2);
-            exercises.push(routine.workouts[index].exercise3);
-
-            let kgs = [];
-            let reps = [];
-            kgs.push(routine.workouts[index].exercise1_kg);
-            reps.push(routine.workouts[index].exercise1_reps);
-            kgs.push(routine.workouts[index].exercise2_kg);
-            reps.push(routine.workouts[index].exercise2_reps);
-            kgs.push(routine.workouts[index].exercise3_kg);
-            reps.push(routine.workouts[index].exercise3_reps);
-
-            let workouts = [];
-            let sets = [];
-
-            for (let i = 0; i < exercises.length; i++) {
-
-                let ii = 0;
-                while (ii < 5) {
-                    const set = {
-                        weight: kgs[i],
-                        reps: reps[i],
-                        comment: '',
-                        finished: false,
-                    };
-                    sets.push(set);
-                    ii++;
+                // Check Validation
+                if (!isValid) {
+                    // Return any errors with 400 status
+                    return res.status(400).json(errors);
                 }
 
-                let exerciseName = exercises[i];
-                const exercise = {
-                    exercise: exerciseName,
-                    sets: sets
-                };
+                Routine.findOne({user: req.user.id})
+                    .then(routine => {
+                        if (!routine) {
+                            return res.status(404).json({user: 'There is no routine for this user.'})
+                        }
 
-                workouts.push(exercise);
-                sets = [];
-            }
+                        const index = routine.workouts.findIndex(d => moment(d.date).format("YYYY-MM-DD") === moment(workoutDate).format("YYYY-MM-DD"));
 
-            const workoutFields = {};
-            workoutFields.user = req.user.id;
-            workoutFields.workout_date = workoutDate;
-            workoutFields.exercises = workouts;
+                        if (index < 0) {
+                            let text = 'There are no planned workouts for date ' + moment(workoutDate).format('YYYY-MM-DD');
+                            return res.status(404).json({date: text})
+                        }
 
-            Workout.findOneAndDelete({
-                user: req.user.id,
-                workout_date: workoutDate
-            })
-                .then(del => {
+                        let exercises = [];
 
-                    // Create new Workout
-                    new Workout(workoutFields)
-                        .save()
-                        .then(workout => {
-                            // return res.status(200).json({workout})
-                            result_text = 'New workout created for date ' + moment(workoutDate).format('YYYY-MM-DD');
-                            return res.status(200).json({msg: result_text})
+                        exercises.push(routine.workouts[index].exercise1);
+                        exercises.push(routine.workouts[index].exercise2);
+                        exercises.push(routine.workouts[index].exercise3);
+
+                        let kgs = [];
+                        let reps = [];
+                        kgs.push(routine.workouts[index].exercise1_kg);
+                        reps.push(routine.workouts[index].exercise1_reps);
+                        kgs.push(routine.workouts[index].exercise2_kg);
+                        reps.push(routine.workouts[index].exercise2_reps);
+                        kgs.push(routine.workouts[index].exercise3_kg);
+                        reps.push(routine.workouts[index].exercise3_reps);
+
+                        let workouts = [];
+                        let sets = [];
+
+                        for (let i = 0; i < exercises.length; i++) {
+
+                            let ii = 0;
+                            while (ii < 5) {
+                                const set = {
+                                    weight: kgs[i],
+                                    reps: reps[i],
+                                    comment: '',
+                                    finished: false,
+                                };
+                                sets.push(set);
+                                ii++;
+                            }
+
+                            let exerciseName = exercises[i];
+                            const exercise = {
+                                exercise: exerciseName,
+                                sets: sets
+                            };
+
+                            workouts.push(exercise);
+                            sets = [];
+                        }
+
+                        const workoutFields = {};
+                        workoutFields.user = req.user.id;
+                        workoutFields.workout_date = workoutDate;
+                        workoutFields.exercises = workouts;
+
+                        Workout.findOneAndDelete({
+                            user: req.user.id,
+                            workout_date: workoutDate
                         })
-                })
+                            .then(del => {
 
+                                // Create new Workout
+                                new Workout(workoutFields)
+                                    .save()
+                                    .then(workout => {
+                                        // return res.status(200).json({workout})
+                                        const result_text = 'New workout created for date ' + moment(workoutDate).format('YYYY-MM-DD');
+                                        return res.status(200).json({msg: result_text})
+                                    })
+                            })
+
+                    })
+                    .catch(err => res.status(404).json(err));
+
+            }
         })
         .catch(err => res.status(404).json(err));
 });

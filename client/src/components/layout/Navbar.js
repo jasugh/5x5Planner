@@ -88,29 +88,44 @@ class Navbar extends Component {
             //Timer
             isOn: false,
             ready: false,
-            time: 10000,
-            restTime: 10000,
+            time: 0,
+            restTime: 0,
             progressTime: 0,
             completed: 0,
         };
         this.startTimer = this.startTimer.bind(this);
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if (props.restTimer.restTime && state.time === 0 && state.restTime === 0) {
+
+            return {
+                time: props.restTimer.restTime,
+                restTime: props.restTimer.restTime
+            };
+        }
+
+        return null;
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.restTimer.start_rest_timer) {
-            this.startTimer();
+            this.startTimer(this.props.restTimer.restTime);
             this.props.stopRestTimer();
         }
 
     }
 
     // Start timer
-    startTimer(event) {
+    startTimer(rs) {
+        //seconds -> milliseconds
+        rs = rs * 1000;
+
         this.setState({
             isOn: true,
             ready: false,
-            time: 10000,
-            restTime: 10000,
+            time: rs,
+            restTime: rs,
             progressTime: 0,
             completed: 0,
         });

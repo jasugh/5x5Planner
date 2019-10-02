@@ -13,14 +13,14 @@ const User = require('../../models/User');
 // @route   GET api/exercise
 // @desc    Get an exercise
 // @access  Private
-router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.get('/one/:exercise', passport.authenticate('jwt', {session: false}), (req, res) => {
 
     const errors = {};
 
     Exercise.findOne(
         {
             user: req.user.id,
-            name: req.body.name
+            name: req.params.exercise
         }
     )
         .then(exercise => {
@@ -39,6 +39,8 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 router.get('/all', passport.authenticate('jwt', {session: false}), (req, res) => {
 
     const errors = {};
+
+
 
     Exercise.find(
         {

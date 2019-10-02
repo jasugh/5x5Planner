@@ -5,6 +5,7 @@ import {
     UPDATE_WORKOUT,
     GET_WORKOUT,
     SELECT_WORKOUT,
+    CLEAR_SELECTED_WORKOUT,
     DELETE_WORKOUT,
     LOADING_WORKOUT,
     STOP_LOADING_WORKOUT,
@@ -81,6 +82,13 @@ export const selectWorkout = (workoutData) => dispatch => {
             });
             dispatch(stopLoadingWorkout())
         });
+};
+
+//Select workout
+export const clearSelectedWorkout = () => dispatch => {
+    dispatch({
+        type: CLEAR_SELECTED_WORKOUT,
+    })
 };
 
 //Delete workout

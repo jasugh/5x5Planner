@@ -7,7 +7,8 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    exercise: [],
+    exercises: [],
+    exercise: {},
     loading: false
 };
 
@@ -26,7 +27,7 @@ export default function (state = initialState, action) {
         case SAVE_EXERCISE:
             return {
                 ...state,
-                exercise: action.payload,
+                exercises: action.payload,
                 // loading: false,
             };
         case GET_EXERCISE:
@@ -38,7 +39,7 @@ export default function (state = initialState, action) {
         case GET_ALL_EXERCISE:
             return {
                 ...state,
-                exercise: action.payload,
+                exercises: action.payload,
                 loading: false,
             };
         case DELETE_EXERCISE:

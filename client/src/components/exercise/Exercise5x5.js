@@ -120,7 +120,7 @@ class Exercise5x5 extends Component {
         const {classes, errors} = this.props;
         const {routineDay, loading} = this.props.routineDay;
         const routineDay_loading = this.props.routineDay.loading;
-        const {exercise} = this.props.exercise;
+        const {exercises} = this.props.exercise;
         const {exercise_loading} = this.props.exercise.loading;
 
         let button_text = '';
@@ -146,7 +146,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 1...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}
@@ -167,7 +167,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 2...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}
@@ -188,7 +188,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 3...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}
@@ -220,7 +220,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 1...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}
@@ -241,7 +241,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 2...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}
@@ -263,7 +263,7 @@ class Exercise5x5 extends Component {
                         <option value="">
                             Select exercise 3...
                         </option>
-                        {exercise.map((row, index) => {
+                        {exercises.map((row, index) => {
                             return (
                                 <option key={row.name} value={row.name}>
                                     {row.name}

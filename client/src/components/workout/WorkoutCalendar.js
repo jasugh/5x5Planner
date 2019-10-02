@@ -30,6 +30,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 import {getRoutine} from '../../actions/routineActions';
 import {getWorkout, createWorkout, selectWorkout} from '../../actions/workoutActions';
+import {getExercise} from '../../actions/exerciseActions';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -228,6 +229,7 @@ class RoutineCalendar extends Component {
             workout_date: moment(this.state.selectedDate).format(DATE_FORMAT),
             exercise: this.state.workout.workout.exercises[number].exercise
         };
+        this.props.getExercise(this.state.workout.workout.exercises[number].exercise);
         this.props.selectWorkout(workoutData);
         this.props.history.push('/workout');
     }
@@ -403,6 +405,7 @@ RoutineCalendar.propTypes = {
     createWorkout: PropTypes.func.isRequired,
     getWorkout: PropTypes.func.isRequired,
     selectWorkout: PropTypes.func.isRequired,
+    getExercise: PropTypes.func.isRequired,
     routine: PropTypes.object.isRequired,
     workout: PropTypes.object.isRequired,
 };
@@ -418,5 +421,6 @@ export default connect(mapStateToProps, {
     getRoutine,
     createWorkout,
     getWorkout,
-    selectWorkout
+    selectWorkout,
+    getExercise
 })(withStyles(styles)(RoutineCalendar));

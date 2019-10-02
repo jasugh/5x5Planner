@@ -195,12 +195,12 @@ class Exercise extends Component {
         } else {
             this.setState({
                 selectedIndex: index,
-                id: this.props.exercise.exercise[index]._id,
-                name: this.props.exercise.exercise[index].name,
-                category: this.props.exercise.exercise[index].category,
-                restTime: this.props.exercise.exercise[index].restTime,
-                weightIncrement: this.props.exercise.exercise[index].weightIncrement,
-                notes: this.props.exercise.exercise[index].notes,
+                id: this.props.exercise.exercises[index]._id,
+                name: this.props.exercise.exercises[index].name,
+                category: this.props.exercise.exercises[index].category,
+                restTime: this.props.exercise.exercises[index].restTime,
+                weightIncrement: this.props.exercise.exercises[index].weightIncrement,
+                notes: this.props.exercise.exercises[index].notes,
 
                 showAdd: true
             });
@@ -212,7 +212,7 @@ class Exercise extends Component {
         const {classes} = this.props;
         const {errors} = this.state;
         const {category} = this.props.category;
-        const {exercise} = this.props.exercise;
+        const {exercises} = this.props.exercise;
         const category_loading = this.props.category.loading;
         const exercise_loading = this.props.exercise.loading;
 
@@ -417,7 +417,7 @@ class Exercise extends Component {
                                 let collapseLines = [];
                                 collapseLines.push(
                                     <List component="nav" key={"c" + i}>
-                                        {exercise.map((exercise_row, ii) => {
+                                        {exercises.map((exercise_row, ii) => {
                                             if (exercise_row.category === category_row.name) {
                                                 return (
                                                     <div key={ii}>

@@ -5,6 +5,7 @@ import {
     UPDATE_WORKOUT,
     GET_WORKOUT,
     SELECT_WORKOUT,
+    CLEAR_SELECTED_WORKOUT,
     DELETE_WORKOUT,
 } from '../actions/types';
 
@@ -49,6 +50,10 @@ export default function (state = initialState, action) {
                 ...state,
                 selected_workout: action.payload,
                 loading: false,
+            };
+        case CLEAR_SELECTED_WORKOUT:
+            return {
+                selected_workout: {},
             };
         case DELETE_WORKOUT:
             return {

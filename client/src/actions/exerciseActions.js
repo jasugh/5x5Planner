@@ -79,11 +79,11 @@ export const getAllExercise = () => dispatch => {
 
 
 //Get exercise
-export const getExercise = () => dispatch => {
+export const getExercise = (exercise) => dispatch => {
     dispatch(clearErrors());
     dispatch(setLoadingExercise());
 
-    axios.get('/api/exercise')
+    axios.get(`/api/exercise/one/${exercise}`)
         .then(res =>
             dispatch({
                 type: GET_EXERCISE,

@@ -41,8 +41,13 @@ const theme = createMuiTheme({
                 paddingTop: 20,
                 paddingLeft: 0,
             }
-        }
-    },
+        },
+        // PrivateTabIndicator: {
+        //     root: {
+        //         width: '50%',
+        //     }
+        // },
+    }
 });
 
 // Check for token

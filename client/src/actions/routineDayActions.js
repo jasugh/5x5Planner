@@ -65,6 +65,7 @@ export const saveAdditionalAB = (addAB ) => dispatch => {
                 type: SAVE_ADD_AB,
                 payload: res.data
             });
+            dispatch(getRoutineDay());
         })
         .catch(err => {
             dispatch({
@@ -87,6 +88,7 @@ export const saveAdditionalDay = (addDay ) => dispatch => {
                 type: SAVE_ADD_DAY,
                 payload: res.data
             });
+            dispatch(getRoutineDay());
         })
         .catch(err => {
             dispatch({

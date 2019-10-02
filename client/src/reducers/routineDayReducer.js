@@ -1,4 +1,9 @@
-import {GET_ROUTINE_DAY, LOADING_ROUTINE_DAY, SAVE_ROUTINE_DAY, SAVE_ADD_AB, STOP_LOADING_ROUTINE_DAY,} from '../actions/types';
+import {
+    GET_ROUTINE_DAY,
+    LOADING_ROUTINE_DAY,
+    SAVE_ROUTINE_DAY,
+    SAVE_ADD_AB,
+    STOP_LOADING_ROUTINE_DAY,} from '../actions/types';
 
 const initialState = {
     routineDay: {},
