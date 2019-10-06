@@ -337,7 +337,6 @@ class RoutineTable extends Component {
                                                 }}
                                             />
                                         </div>
-
                                     </ExpansionPanelDetails>
 
                                     {/*<ExpansionPanelDetails className={classes.details}>*/}

@@ -21,14 +21,18 @@ import {logoutUser, setCurrentUser} from "./actions/authActions";
 // import Setting from "./components/settings/Settings";
 import Category from "./components/basicData/Category";
 import Exercise from "./components/basicData/Exercise";
-import AdditionalExercise from "./components/exercise/AdditionalExercise";
 import RoutinePlan from './components/exercise/RoutinePlan';
 import RoutineList from './components/routines/RoutineList';
 import RoutineTable from "./components/routines/RoutineTable";
 import WorkoutCalendar from "./components/workout/WorkoutCalendar";
 import Workout from "./components/workout/Workout";
 import Exercise5x5 from "./components/exercise/Exercise5x5";
-import RoutineCreate from "./components/routines/RoutineCreate";
+// import RoutineCreate from "./components/routines/RoutineCreate";
+import ReadMe from "./components/layout/ReadMe";
+import Instructions from "./components/layout/Instructions";
+// import AdditionalExercise from "./components/exercise/AdditionalExercise";
+import ExerciseForAB from "./components/exercise/ExerciseForAB";
+import ExerciseByDay from "./components/exercise/ExerciseByDay";
 
 const theme = createMuiTheme({
     palette: {
@@ -85,6 +89,8 @@ class App extends Component {
                                 <Switch>
                                     <PrivateRoute exact path="/dashboard" component={Dashboard}/>
 
+                                    <PrivateRoute exact path="/readme" component={ReadMe}/>
+                                    <PrivateRoute exact path="/instructions" component={Instructions}/>
                                     {/*Basic Date*/}
                                     {/*<PrivateRoute exact path="/setting" component={Setting}/>*/}
                                     <PrivateRoute exact path="/category" component={Category}/>
@@ -93,10 +99,12 @@ class App extends Component {
                                     {/*5x5 exercise and plan*/}
                                     <PrivateRoute exact path="/exercise5x5" component={Exercise5x5}/>
                                     <PrivateRoute exact path="/plan" component={RoutinePlan}/>
-                                    <PrivateRoute exact path="/additionalexercise" component={AdditionalExercise}/>
+                                    {/*<PrivateRoute exact path="/additionalexercise" component={AdditionalExercise}/>*/}
+                                    <PrivateRoute exact path="/exerciseforab" component={ExerciseForAB}/>
+                                    <PrivateRoute exact path="/exercisebyday" component={ExerciseByDay}/>
 
                                     {/*Routine create, update*/}
-                                    <PrivateRoute exact path="/routine/create" component={RoutineCreate}/>
+                                    {/*<PrivateRoute exact path="/routine/create" component={RoutineCreate}/>*/}
                                     <PrivateRoute exact path="/routine/list" component={RoutineList}/>
                                     <PrivateRoute exact path="/routine/update" component={RoutineTable}/>
                                     <PrivateRoute exact path="/workout/calendar" component={WorkoutCalendar}/>

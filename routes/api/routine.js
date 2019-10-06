@@ -314,6 +314,7 @@ function createRoutine(routineDay, plan, sd, squat_kg, bench_kg, overhead_kg, de
     let exerciseNumber = startDNumber + 1;
     let firstExercise = true;
     let aeD = [];
+    let aeAB = [];
 
     for (let i = 0; i < 18; i++) {
 
@@ -409,8 +410,8 @@ function addDays(date, days) {
 }
 
 function addWorkout(week, date, ex1, ex2, ex3, kg1, kg2, kg3, addE, aeD) {
-    if (aeD.length > 0){
-         addE = addE.concat(aeD);
+    if (aeD.length > 0) {
+        addE = addE.concat(aeD);
     }
 
     let routineFields = {};
@@ -434,8 +435,10 @@ function getAddtionalForDay(routineDay, woWeekDays, sd) {
     let aeD = [];
 
     for (let i = 0; i < routineDay.add_exerciseDay.length; i++) {
-
         if (woWeekDays[routineDay.add_exerciseDay[i].week_day] === moment(sd).format('ddd')) {
+
+            // console.log('jou ');
+
             const aeDFields = {
                 add_exercise: routineDay.add_exerciseDay[i].add_exercise,
                 add_exercise_kg: 0,

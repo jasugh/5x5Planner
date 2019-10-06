@@ -123,6 +123,17 @@ class RoutineList extends Component {
                                                 }
                                             })()}
                                         </TableCell>
+
+                                        {/*{row.add_exercises.map((row, index) => {*/}
+                                        {/*    return (*/}
+                                        {/*        <TableRow>*/}
+                                        {/*            <TableCell>*/}
+                                        {/*                {row.add_exercise}*/}
+                                        {/*            </TableCell>*/}
+                                        {/*        </TableRow>*/}
+                                        {/*    )*/}
+                                        {/*})}*/}
+
                                     </TableRow>
                                 );
                             })}

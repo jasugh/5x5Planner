@@ -24,6 +24,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import Divider from '@material-ui/core/Divider';
 
 import {logoutUser} from "../../actions/authActions";
 import {stopRestTimer} from '../../actions/restTimerActions';
@@ -74,6 +75,9 @@ const styles = theme => ({
     nested: {
         paddingLeft: theme.spacing(4),
     },
+    listItemText: {
+        backgroundColor: theme.palette.secondary.main,
+    }
 });
 
 class Navbar extends Component {
@@ -315,34 +319,55 @@ class Navbar extends Component {
 
                             <ListItem
                                 button
-                                onClick={this.handleClick}>
-                                <ListItemText primary="Basic Data"/>
-                                {this.state.collapse ? <ExpandLess/> : <ExpandMore/>}
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/readme"
+                            >
+                                <ListItemText primary="5x5 training system"/>
                             </ListItem>
 
-                            <Collapse in={this.state.collapse} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    <ListItem
-                                        className={classes.nested}
-                                        button
-                                        onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                        component={this.renderLink}
-                                        to="/category"
-                                    >
-                                        <ListItemText primary={"Categories"}/>
-                                    </ListItem>
+                            <ListItem
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/instructions"
+                            >
+                                <ListItemText primary="Instructions"/>
+                            </ListItem>
+                            <Divider style={{height: 2}}/>
+                            <ListItem>
+                                <ListItemText secondary="Exercises"/>
+                            </ListItem>
+                            {/*<ListItem*/}
+                            {/*    button*/}
+                            {/*    onClick={this.handleClick}>*/}
+                            {/*    <ListItemText primary="Basic Data"/>*/}
+                            {/*    {this.state.collapse ? <ExpandLess/> : <ExpandMore/>}*/}
+                            {/*</ListItem>*/}
 
-                                    <ListItem
-                                        className={classes.nested}
-                                        button
-                                        onClick={() => this.onSetDrawerOpen(this.state.open)}
-                                        component={this.renderLink}
-                                        to="/exercise"
-                                    >
-                                        <ListItemText primary={"Exercises"}/>
-                                    </ListItem>
-                                </List>
-                            </Collapse>
+                            {/*<Collapse in={this.state.collapse} timeout="auto" unmountOnExit>*/}
+                            {/*    <List component="div" disablePadding>*/}
+                            <ListItem
+                                // className={classes.nested}
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/category"
+                            >
+                                <ListItemText primary={"Exercise Categories"}/>
+                            </ListItem>
+
+                            <ListItem
+                                // className={classes.nested}
+                                button
+                                onClick={() => this.onSetDrawerOpen(this.state.open)}
+                                component={this.renderLink}
+                                to="/exercise"
+                            >
+                                <ListItemText primary={"Exercises"}/>
+                            </ListItem>
+                            {/*</List>*/}
+                            {/*</Collapse>*/}
 
                             <ListItem
                                 button
@@ -366,20 +391,33 @@ class Navbar extends Component {
                                 button
                                 onClick={() => this.onSetDrawerOpen(this.state.open)}
                                 component={this.renderLink}
-                                to="/additionalexercise"
+                                to="/exerciseforab"
                             >
-                                <ListItemText primary="Additional Exercises"/>
+                                <ListItemText primary="Add. exercises: A and B"/>
                             </ListItem>
 
                             <ListItem
                                 button
                                 onClick={() => this.onSetDrawerOpen(this.state.open)}
                                 component={this.renderLink}
-                                to="/routine/create"
+                                to="/exercisebyday"
                             >
-                                <ListItemText primary="Routine Create"/>
+                                <ListItemText primary="Add. exercises: Workout days"/>
                             </ListItem>
 
+                            {/*<ListItem*/}
+                            {/*    button*/}
+                            {/*    onClick={() => this.onSetDrawerOpen(this.state.open)}*/}
+                            {/*    component={this.renderLink}*/}
+                            {/*    to="/routine/create"*/}
+                            {/*>*/}
+                            {/*    <ListItemText primary="Routine Create"/>*/}
+                            {/*</ListItem>*/}
+                            <Divider style={{height: 2}}/>
+                            <ListItem>
+                                <ListItemText secondary="Training"
+                                />
+                            </ListItem>
                             <ListItem
                                 button
                                 onClick={() => this.onSetDrawerOpen(this.state.open)}
@@ -409,7 +447,6 @@ class Navbar extends Component {
                             </ListItem>
                         </List>
                     </Drawer>
-
 
                 </div>
                 <div>
