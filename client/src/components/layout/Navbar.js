@@ -67,6 +67,7 @@ const styles = theme => ({
         // background: "linear-gradient(to left, #f44336, #607d8b)",
     },
     linearPadding: {
+        sticky: true,
         marginTop: 64,
         [theme.breakpoints.down("sm")]: {
             marginTop: 56
@@ -77,6 +78,11 @@ const styles = theme => ({
     },
     listItemText: {
         backgroundColor: theme.palette.secondary.main,
+    },
+    progressBar: {
+        position: 'fixed',
+        width: '100%',
+        // height: 100
     }
 });
 
@@ -272,7 +278,7 @@ class Navbar extends Component {
         }
 
         return (
-            <div style={{paddingBottom: 20}}>
+            <div  className={classes.linearPadding}>
                 <div>
                     <AppBar
                         className={classes.appBar}
@@ -291,7 +297,8 @@ class Navbar extends Component {
                                 5X5
                             </Typography>
 
-                            <Grid container style={{height: 32}} justify="center">
+
+                            <Grid container style={{height: 32, paddingRight: 20}} justify="center">
                                 {restTimer}
                             </Grid>
 
@@ -449,17 +456,19 @@ class Navbar extends Component {
                     </Drawer>
 
                 </div>
-                <div>
+                <div className={classes.progressBar}>
                     <LinearProgress
-                        className={classes.linearPadding}
+                        // className={classes.linearPadding}
                         classes={{
                             bar1Determinate: classes.bar1Determinate,
                         }}
-                        style={{height: 4}}
+                        style={{height: 10}}
                         variant="determinate"
                         value={this.state.completed}
                     />
                 </div>
+                <div style={{paddingBottom: 20}}/>
+
             </div>
         );
     }

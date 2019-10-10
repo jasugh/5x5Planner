@@ -55,6 +55,7 @@ router.post('/update', passport.authenticate('jwt', {session: false}), (req, res
         exercise3_kg: req.body.exercise3_kg,
         exercise3_reps: req.body.exercise3_reps,
         finished: req.body.finished,
+        add_exercises: req.body.add_exercises
     };
 
     Routine.findOne(

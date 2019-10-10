@@ -23,7 +23,7 @@ import Category from "./components/basicData/Category";
 import Exercise from "./components/basicData/Exercise";
 import RoutinePlan from './components/exercise/RoutinePlan';
 import RoutineList from './components/routines/RoutineList';
-import RoutineTable from "./components/routines/RoutineTable";
+import RoutineTable2 from "./components/routines/RoutineTable2";
 import WorkoutCalendar from "./components/workout/WorkoutCalendar";
 import Workout from "./components/workout/Workout";
 import Exercise5x5 from "./components/exercise/Exercise5x5";
@@ -106,7 +106,7 @@ class App extends Component {
                                     {/*Routine create, update*/}
                                     {/*<PrivateRoute exact path="/routine/create" component={RoutineCreate}/>*/}
                                     <PrivateRoute exact path="/routine/list" component={RoutineList}/>
-                                    <PrivateRoute exact path="/routine/update" component={RoutineTable}/>
+                                    <PrivateRoute exact path="/routine/update" component={RoutineTable2}/>
                                     <PrivateRoute exact path="/workout/calendar" component={WorkoutCalendar}/>
                                     <PrivateRoute exact path="/workout" component={Workout}/>
                                 </Switch>

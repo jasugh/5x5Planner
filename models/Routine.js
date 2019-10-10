@@ -70,11 +70,9 @@ const RoutineSchema = new Schema({
                         },
                         add_exercise_kg: {
                             type: Number,
-                            required: true
                         },
                         add_exercise_reps: {
                             type: Number,
-                            required: true
                         }
                     }
                 ]

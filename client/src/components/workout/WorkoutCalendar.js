@@ -142,7 +142,8 @@ class RoutineCalendar extends Component {
         this.props.getRoutine();
 
         let d;
-        if (this.props.workout.workout.workout !== undefined) {
+        if (this.props.workout.workout.workout) {
+            // if (this.props.workout.workout.workout !== undefined) {
             d = moment(this.props.workout.workout.workout.workout_date).format(DATE_FORMAT);
         } else {
             d = moment(new Date()).format(DATE_FORMAT);
