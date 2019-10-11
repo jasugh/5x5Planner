@@ -21,9 +21,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import soundfile from "../workout/Twin-bell-alarm-clock.mp3";
 import {Grid} from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
 import Divider from '@material-ui/core/Divider';
 
 import {logoutUser} from "../../actions/authActions";

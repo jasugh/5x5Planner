@@ -41,6 +41,7 @@ const styles = theme => ({
     },
     exerciseHeader: {
         width: 120,
+        marginRight: 5
     },
     expandedPanel: {
         backgroundColor: theme.palette.primary.main,
@@ -52,7 +53,6 @@ const styles = theme => ({
     },
     reps: {
         width: 80,
-        marginLeft: 0
     },
     maxGrid: {
         width: "50%",
@@ -81,6 +81,9 @@ class RoutineTable extends Component {
         super();
         this.state = ({
             workouts: [],
+            add_exercise_kg: 0,
+            add_exercise_reps: 0,
+
             expandedPanel: '',
             routine_errors: {},
             update: false,
@@ -91,6 +94,7 @@ class RoutineTable extends Component {
         this.onChecked = this.onChecked.bind(this);
         this.onCheckUpdate = this.onCheckUpdate.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.onChangeAdditional = this.onChangeAdditional.bind(this);
         this.onUpdateRoutine = this.onUpdateRoutine.bind(this);
     };
 
@@ -120,10 +124,18 @@ class RoutineTable extends Component {
     };
 
     onChange(event) {
-        this.setState({changed: true});
+        // this.setState({changed: true});
 
         let wo = this.state.workouts;
         wo[this.state.expandedPanel][event.target.name] = event.target.value;
+        this.setState({workouts: wo});
+    }
+
+    onChangeAdditional(ind, event) {
+        // this.setState({changed: true});
+
+        let wo = this.state.workouts;
+        wo[this.state.expandedPanel].add_exercises[ind][event.target.name] = event.target.value;
         this.setState({workouts: wo});
     }
 
@@ -140,9 +152,10 @@ class RoutineTable extends Component {
             exercise3: this.state.workouts[this.state.expandedPanel].exercise3,
             exercise3_kg: this.state.workouts[this.state.expandedPanel].exercise3_kg,
             exercise3_reps: this.state.workouts[this.state.expandedPanel].exercise3_reps,
+            add_exercises: this.state.workouts[this.state.expandedPanel].add_exercises,
         };
 
-        this.setState({changed: false, update: false});
+        // this.setState({changed: false, update: false});
 
         this.props.updateRoutine(updatedRoutine, this.props.history);
     }
@@ -155,18 +168,18 @@ class RoutineTable extends Component {
         const {classes} = this.props;
         const {routine, routine_loading, routine_errors} = this.props.routine;
 
-        let panelLines;
+        let routineLines;
 
         if (!routine_loading && routine.workouts) {
             if (!this.state.workouts) {
-                panelLines =
+                routineLines =
                     <Grid container className={classes.root} justify="center">
                         <Typography align={"center"} color="primary" variant="h6">
                             No Routine data found.
                         </Typography>
                     </Grid>
             } else {
-                panelLines =
+                routineLines =
                     <div className={classes.root}>
                         {this.state.workouts.map((row, index) => {
                             return (
@@ -199,191 +212,212 @@ class RoutineTable extends Component {
                                         </div>
                                     </ExpansionPanelSummary>
 
-                                    <ExpansionPanelDetails className={classes.details}>
-                                        <div className={classes.column}>
-                                            <Typography
-                                                className={classes.exerciseHeader}
-                                            >
-                                                {this.state.workouts[index].exercise1}
-                                            </Typography>
-                                        </div>
+                                    {/* 5x5 exercises ----> */}
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.kg}
-                                                value={this.state.workouts[index].exercise1_kg}
-                                                error={!isEmpty(routine_errors.exercise1_kg)}
-                                                helperText={routine_errors.exercise1_kg}
-                                                name="exercise1_kg"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "20", max: "500", step: "2.50"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">kg</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
+                                    <div>
+                                        <ExpansionPanelDetails className={classes.details}>
+                                            <div className={classes.column}>
+                                                <Typography
+                                                    className={classes.exerciseHeader}
+                                                >
+                                                    {this.state.workouts[index].exercise1}
+                                                </Typography>
+                                            </div>
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.reps}
-                                                value={this.state.workouts[index].exercise1_reps}
-                                                error={!isEmpty(routine_errors.exercise1_reps)}
-                                                helperText={routine_errors.exercise1_reps}
-                                                name="exercise1_reps"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "1", max: "20", step: "1"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">reps</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
-                                    </ExpansionPanelDetails>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.kg}
+                                                    value={this.state.workouts[index].exercise1_kg}
+                                                    error={!isEmpty(routine_errors.exercise1_kg)}
+                                                    helperText={routine_errors.exercise1_kg}
+                                                    name="exercise1_kg"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "20", max: "500", step: "2.50"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">kg</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.reps}
+                                                    value={this.state.workouts[index].exercise1_reps}
+                                                    error={!isEmpty(routine_errors.exercise1_reps)}
+                                                    helperText={routine_errors.exercise1_reps}
+                                                    name="exercise1_reps"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "1", max: "20", step: "1"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">reps</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                        </ExpansionPanelDetails>
 
-                                    <ExpansionPanelDetails className={classes.details}>
-                                        <div className={classes.column}>
-                                            <Typography
-                                                className={classes.exerciseHeader}
-                                            >
-                                                {this.state.workouts[index].exercise2}
-                                            </Typography>
-                                        </div>
+                                        <ExpansionPanelDetails className={classes.details}>
+                                            <div className={classes.column}>
+                                                <Typography
+                                                    className={classes.exerciseHeader}
+                                                >
+                                                    {this.state.workouts[index].exercise2}
+                                                </Typography>
+                                            </div>
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.kg}
-                                                value={this.state.workouts[index].exercise2_kg}
-                                                error={!isEmpty(routine_errors.exercise2_kg)}
-                                                helperText={routine_errors.exercise2_kg}
-                                                name="exercise2_kg"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "20", max: "500", step: "2.50"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">kg</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.kg}
+                                                    value={this.state.workouts[index].exercise2_kg}
+                                                    error={!isEmpty(routine_errors.exercise2_kg)}
+                                                    helperText={routine_errors.exercise2_kg}
+                                                    name="exercise2_kg"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "20", max: "500", step: "2.50"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">kg</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.reps}
-                                                value={this.state.workouts[index].exercise2_reps}
-                                                error={!isEmpty(routine_errors.exercise2_reps)}
-                                                helperText={routine_errors.exercise2_reps}
-                                                name="exercise2_reps"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "1", max: "20", step: "1"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">reps</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.reps}
+                                                    value={this.state.workouts[index].exercise2_reps}
+                                                    error={!isEmpty(routine_errors.exercise2_reps)}
+                                                    helperText={routine_errors.exercise2_reps}
+                                                    name="exercise2_reps"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "1", max: "20", step: "1"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">reps</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                        </ExpansionPanelDetails>
 
-                                    </ExpansionPanelDetails>
+                                        <ExpansionPanelDetails className={classes.details}>
 
-                                    <ExpansionPanelDetails className={classes.details}>
+                                            <div className={classes.column}>
+                                                <Typography
+                                                    className={classes.exerciseHeader}
+                                                >
+                                                    {this.state.workouts[index].exercise3}
+                                                </Typography>
+                                            </div>
 
-                                        <div className={classes.column}>
-                                            <Typography
-                                                className={classes.exerciseHeader}
-                                            >
-                                                {this.state.workouts[index].exercise3}
-                                            </Typography>
-                                        </div>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.kg}
+                                                    value={this.state.workouts[index].exercise3_kg}
+                                                    error={!isEmpty(routine_errors.exercise3_kg)}
+                                                    helperText={routine_errors.exercise3_kg}
+                                                    name="exercise3_kg"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "20", max: "500", step: "2.50"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">kg</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.kg}
-                                                value={this.state.workouts[index].exercise3_kg}
-                                                error={!isEmpty(routine_errors.exercise3_kg)}
-                                                helperText={routine_errors.exercise3_kg}
-                                                name="exercise3_kg"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "20", max: "500", step: "2.50"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">kg</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
+                                            <div className={classes.column}>
+                                                <TextField
+                                                    className={classes.reps}
+                                                    value={this.state.workouts[index].exercise3_reps}
+                                                    error={!isEmpty(routine_errors.exercise3_reps)}
+                                                    helperText={routine_errors.exercise3_reps}
+                                                    name="exercise3_reps"
+                                                    type="number"
+                                                    onChange={this.onChange}
+                                                    inputProps={{min: "1", max: "20", step: "1"}}
+                                                    // eslint-disable-next-line
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment
+                                                            position="end">reps</InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                        </ExpansionPanelDetails>
+                                    </div>
 
-                                        <div className={classes.column}>
-                                            <TextField
-                                                className={classes.reps}
-                                                value={this.state.workouts[index].exercise3_reps}
-                                                error={!isEmpty(routine_errors.exercise3_reps)}
-                                                helperText={routine_errors.exercise3_reps}
-                                                name="exercise3_reps"
-                                                type="number"
-                                                onChange={this.onChange}
-                                                inputProps={{min: "1", max: "20", step: "1"}}
-                                                // eslint-disable-next-line
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment
-                                                        position="end">reps</InputAdornment>,
-                                                }}
-                                            />
-                                        </div>
-                                    </ExpansionPanelDetails>
+                                    {/* Additional exercises ----> */}
 
-                                    {/*<ExpansionPanelDetails className={classes.details}>*/}
-                                    {/*    <div className={classes.column}>*/}
-                                    {/*        <Typography*/}
-                                    {/*            className={classes.exerciseHeader}*/}
-                                    {/*        >*/}
-                                    {/*            Is this workout finished?*/}
-                                    {/*        </Typography>*/}
-                                    {/*    </div>*/}
-                                    {/*    <div className={classes.column}>*/}
-                                    {/*        <Checkbox*/}
-                                    {/*            className={classes.boxPadding}*/}
-                                    {/*            onChange={this.onCheckFinished("finished")}*/}
-                                    {/*            checked={this.state.workouts[index].finished}*/}
-                                    {/*            value="finished"*/}
-                                    {/*            color="primary"*/}
-                                    {/*            disabled={this.state.initFinished[index]}*/}
-                                    {/*        />*/}
-                                    {/*    </div>*/}
-                                    {/*    <div className={classes.column}>*/}
+                                    <Divider style={{height: 2}}/>
 
-                                    {/*    </div>*/}
+                                    <div>
+                                        <Typography style={{paddingLeft: 25, paddingTop: 5}}>
+                                            Additional exercises:
+                                        </Typography>
+                                        {row.add_exercises.map((addExercise, ind) => {
+                                                return (
+                                                    <ExpansionPanelDetails className={classes.details}>
+                                                        <div className={classes.column}>
+                                                            <Typography
+                                                                className={classes.exerciseHeader}
+                                                            >
+                                                                {addExercise.add_exercise}
+                                                            </Typography>
+                                                        </div>
 
-                                    {/*    <div className={classes.column}>*/}
-                                    {/*        <Typography*/}
-                                    {/*            className={classes.exerciseHeader}*/}
-                                    {/*        >*/}
-                                    {/*            Update exercises from this date onwards?*/}
-                                    {/*        </Typography>*/}
-                                    {/*    </div>*/}
-                                    {/*    <div className={classes.column}>*/}
-                                    {/*        <Checkbox*/}
-                                    {/*            className={classes.boxPadding}*/}
-                                    {/*            onChange={this.onCheckUpdate("update")}*/}
-                                    {/*            checked={this.state.update}*/}
-                                    {/*            value="update"*/}
-                                    {/*            color="primary"*/}
-                                    {/*            disabled={!this.state.changed}*/}
-                                    {/*        />*/}
-                                    {/*    </div>*/}
-                                    {/*    <div className={classes.column}>*/}
+                                                        <div className={classes.column}>
+                                                            <TextField
+                                                                className={classes.kg}
+                                                                value={this.state.workouts[index].add_exercises[ind].add_exercise_kg}
+                                                                error={!isEmpty(routine_errors.add_exercise_kg)}
+                                                                helperText={routine_errors.add_exercise_kg}
+                                                                name="add_exercise_kg"
+                                                                type="number"
+                                                                onChange={this.onChangeAdditional.bind(this, ind)}
+                                                                inputProps={{min: "20", max: "500", step: "2.50"}}
+                                                                // eslint-disable-next-line
+                                                                InputProps={{
+                                                                    endAdornment: <InputAdornment
+                                                                        position="end">kg</InputAdornment>,
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className={classes.column}>
+                                                            <TextField
+                                                                className={classes.reps}
 
-                                    {/*    </div>*/}
-                                    {/*</ExpansionPanelDetails>*/}
+                                                                value={this.state.workouts[index].add_exercises[ind].add_exercise_reps}
+                                                                error={!isEmpty(routine_errors.add_exercise_reps)}
+                                                                helperText={routine_errors.add_exercise_reps}
+                                                                name="add_exercise_reps"
 
-                                    <Divider/>
+                                                                type="number"
+                                                                onChange={this.onChangeAdditional.bind(this, ind)}
+                                                                inputProps={{min: "1", max: "20", step: "1"}}
+                                                                // eslint-disable-next-line
+                                                                InputProps={{
+                                                                    endAdornment: <InputAdornment
+                                                                        position="end">reps</InputAdornment>,
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </ExpansionPanelDetails>
+                                                )
+                                            }
+                                        )}
+                                    </div>
+
+                                    <Divider style={{height: 2}}/>
+
+                                    {/* Update button ----> */}
 
                                     <ExpansionPanelActions className={classes.buttonJustify}>
                                         <Button
@@ -396,8 +430,9 @@ class RoutineTable extends Component {
                                             update
                                         </Button>
                                     </ExpansionPanelActions>
+
                                 </ExpansionPanel>
-                            );
+                            )
                         })}
                     </div>
             }
@@ -413,7 +448,9 @@ class RoutineTable extends Component {
                     :
                     (
                         <Grid container justify="center">
-                            {panelLines}
+                            <div className={classes.root}>
+                                {routineLines}
+                            </div>
                         </Grid>
 
                     )}
@@ -428,9 +465,10 @@ RoutineTable.propTypes = {
     routine: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-    routine: state.routine,
-    routine_errors: state.routine_errors
-});
+const
+    mapStateToProps = (state) => ({
+        routine: state.routine,
+        routine_errors: state.routine_errors
+    });
 
 export default connect(mapStateToProps, {getRoutine, updateRoutine})(withStyles(styles)(RoutineTable));
