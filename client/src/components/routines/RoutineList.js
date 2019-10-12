@@ -89,6 +89,8 @@ class RoutineList extends Component {
                                     className={classes.head}>Reps</TableCell>
                                 <TableCell
                                     className={classes.head}>Finished</TableCell>
+                                <TableCell
+                                    className={classes.head}>Additional Exercises ...</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -101,7 +103,7 @@ class RoutineList extends Component {
                                         key={index}
                                     >
                                         <TableCell>{row.week}</TableCell>
-                                        <TableCell>{moment(row.date).format(DATE_FORMAT)}</TableCell>
+                                        <TableCell style={{width: 100}}>{moment(row.date).format(DATE_FORMAT)}</TableCell>
                                         <TableCell>{row.exercise1}</TableCell>
                                         <TableCell>{row.exercise1_kg}</TableCell>
                                         <TableCell>{row.exercise1_reps}</TableCell>
@@ -124,15 +126,15 @@ class RoutineList extends Component {
                                             })()}
                                         </TableCell>
 
-                                        {/*{row.add_exercises.map((row, index) => {*/}
-                                        {/*    return (*/}
-                                        {/*        <TableRow>*/}
-                                        {/*            <TableCell>*/}
-                                        {/*                {row.add_exercise}*/}
-                                        {/*            </TableCell>*/}
-                                        {/*        </TableRow>*/}
-                                        {/*    )*/}
-                                        {/*})}*/}
+
+                                        {row.add_exercises.map((row, index) => {
+                                            return (
+                                                    <TableCell>
+                                                        {row.add_exercise}
+                                                    </TableCell>
+                                            )
+                                        })
+                                        }
 
                                     </TableRow>
                                 );

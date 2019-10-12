@@ -30,8 +30,6 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                 const result_text = 'Workout found for date ' + moment(workoutDate).format('YYYY-MM-DD');
                 return res.status(200).json({msg: result_text})
             } else {
-
-
                 const {errors, isValid} = validateWorkoutInput(req.body);
 
                 // Check Validation
@@ -53,6 +51,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                             return res.status(404).json({date: text})
                         }
 
+                        // Add 5x5 exercises
                         let exercises = [];
 
                         exercises.push(routine.workouts[index].exercise1);
@@ -72,7 +71,6 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                         let sets = [];
 
                         for (let i = 0; i < exercises.length; i++) {
-
                             let ii = 0;
                             while (ii < 5) {
                                 const set = {
@@ -95,6 +93,26 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                             sets = [];
                         }
 
+                        // Add additional exercises
+                        const set = {
+                            weight: 0,
+                            reps: 1,
+                            comment: '',
+                            finished: false,
+                        };
+                        sets.push(set);
+
+                        exercises = [];
+                        for(i = 0; i < routine.workouts[index].add_exercises.length; i++){
+                            const exercise = {
+                                exercise: routine.workouts[index].add_exercises[i].add_exercise,
+                                sets: sets
+                            };
+                            workouts.push(exercise);
+                        }
+                        sets = [];
+
+                        // Add exercises to workouts
                         const workoutFields = {};
                         workoutFields.user = req.user.id;
                         workoutFields.workout_date = workoutDate;

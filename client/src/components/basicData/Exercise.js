@@ -102,7 +102,6 @@ class Exercise extends Component {
         if (props.errors !== state.errors) {
             return {errors: props.errors};
         }
-
         return null;
     }
 
@@ -114,7 +113,6 @@ class Exercise extends Component {
         this.setState({
             showAdd: true,
             name: '',
-            category: '',
             restTime: 0,
             weightIncrement: 0,
             notes: '',
@@ -122,6 +120,8 @@ class Exercise extends Component {
     }
 
     onSave() {
+
+
         if (this.state.id) {
             const exerciseData = {
                 id: this.state.id,
@@ -181,7 +181,10 @@ class Exercise extends Component {
         let o = this.state.open;
         o[index] = !this.state.open[index];
 
-        this.setState({open: o});
+        this.setState({
+            open: o,
+            category: this.props.category.category[index].name
+        });
     }
 
     onExerciseListClick(event, index) {
@@ -217,6 +220,7 @@ class Exercise extends Component {
         const exercise_loading = this.props.exercise.loading;
 
         let button_text = 'add';
+
         if (this.state.id) {
             button_text = 'update';
         }
@@ -254,7 +258,7 @@ class Exercise extends Component {
                 </div>
             );
 
-            if (this.state.showAdd || errors.name) {
+            if (this.state.showAdd || !isEmpty(errors)) {
                 exerciseView.push(
                     <Grid container justify="center" key={"b"}>
                         <Grid style={{paddingTop: 20}} item xs={12}>

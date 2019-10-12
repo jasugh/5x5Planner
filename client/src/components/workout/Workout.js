@@ -225,6 +225,7 @@ class Workout extends Component {
     };
 
     componentWillUnmount() {
+        this.props.updateWorkout(this.state.workout);
         this.props.clearSelectedWorkout();
     }
 
@@ -233,7 +234,7 @@ class Workout extends Component {
     };
 
     onSave(event) {
-        if (this.state.reps === 0) {
+        if (this.state.reps < 1) {
             this.setState({error: {reps: 'Please enter Reps'}});
             return;
         }
@@ -286,7 +287,7 @@ class Workout extends Component {
     onReduceWeight(event) {
         let w = this.state.weight;
         w = w - 2.5;
-        if (w > 19) {
+        if (w >= 2.5 || w === 0) {
             this.setState({weight: w});
         }
     };
@@ -389,8 +390,7 @@ class Workout extends Component {
         let f = s.filter(f => f.finished === true).length;
 
         if (f === s.length) {
-            this.props.updateWorkout(this.state.workout);
-
+            // this.props.updateWorkout(this.state.workout);
             this.setState({alertOpen: true});
         }
     };

@@ -74,6 +74,9 @@ const styles = theme => ({
     boxPadding: {
         paddingLeft: 0
     },
+    expansionPanel:{
+        backgroundColor: 'transparent'
+    }
 });
 
 class RoutineTable extends Component {
@@ -184,6 +187,7 @@ class RoutineTable extends Component {
                         {this.state.workouts.map((row, index) => {
                             return (
                                 <ExpansionPanel
+                                    className={classes.expansionPanel}
                                     expanded={this.state.expandedPanel === index}
                                     onChange={this.onChecked(index)}
                                     key={index}
