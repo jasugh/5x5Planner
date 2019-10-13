@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 import {
-    CREATE_WORKOUT,
     UPDATE_WORKOUT,
     GET_WORKOUT,
+    GET_CREATE_WORKOUT,
     SELECT_WORKOUT,
     CLEAR_SELECTED_WORKOUT,
     DELETE_WORKOUT,
@@ -13,15 +13,15 @@ import {
     GET_ERRORS,
 } from "./types";
 
-//Create workout
-export const createWorkout = (workoutData) => dispatch => {
+//Get/create workout for a date
+export const getCreateWorkout = (workoutData) => dispatch => {
     dispatch(clearErrors());
     dispatch(setLoadingWorkout());
 
     axios.post('/api/workout', workoutData)
         .then(res => {
             dispatch({
-                type: CREATE_WORKOUT,
+                type: GET_CREATE_WORKOUT,
                 payload: res.data
             });
             dispatch(getWorkout(workoutData));

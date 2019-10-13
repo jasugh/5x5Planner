@@ -226,7 +226,6 @@ class Workout extends Component {
 
     componentWillUnmount() {
         this.props.updateWorkout(this.state.workout);
-        this.props.clearSelectedWorkout();
     }
 
     onChange(event) {

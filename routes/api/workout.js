@@ -97,7 +97,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                         const set = {
                             weight: 0,
                             reps: 1,
-                            comment: 'woDate ' + workoutDate,
+                            comment: '',
                             finished: false,
                         };
                         sets.push(set);

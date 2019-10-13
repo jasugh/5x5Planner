@@ -267,6 +267,7 @@ class Navbar extends Component {
                     restTimer =
                         <div style={{paddingTop: 5}}>
                             <Alarm
+                                className={classes.height}
                                 color="inherit"
                             />
                         </div>

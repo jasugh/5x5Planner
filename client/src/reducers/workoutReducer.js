@@ -1,12 +1,11 @@
 import {
     LOADING_WORKOUT,
     STOP_LOADING_WORKOUT,
-    CREATE_WORKOUT,
     UPDATE_WORKOUT,
     GET_WORKOUT,
     SELECT_WORKOUT,
     CLEAR_SELECTED_WORKOUT,
-    DELETE_WORKOUT,
+    DELETE_WORKOUT, GET_CREATE_WORKOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -27,7 +26,7 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false,
             };
-        case CREATE_WORKOUT:
+        case GET_CREATE_WORKOUT:
             return {
                 ...state,
                 workout: action.payload,

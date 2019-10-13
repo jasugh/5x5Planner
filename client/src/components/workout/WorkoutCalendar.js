@@ -29,7 +29,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import {getRoutine} from '../../actions/routineActions';
-import {getWorkout, createWorkout, selectWorkout} from '../../actions/workoutActions';
+import {getCreateWorkout, selectWorkout} from '../../actions/workoutActions';
 import {getExercise} from '../../actions/exerciseActions';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -142,9 +142,8 @@ class RoutineCalendar extends Component {
         this.props.getRoutine();
 
         let d;
-        if (this.props.workout.workout.workout) {
-            // if (this.props.workout.workout.workout !== undefined) {
-            d = moment(this.props.workout.workout.workout.workout_date).format(DATE_FORMAT);
+        if(this.props.workout.selected_workout.workout) {
+            d = moment(this.props.workout.selected_workout.workout.workout_date).format(DATE_FORMAT);
         } else {
             d = moment(new Date()).format(DATE_FORMAT);
         }
@@ -154,7 +153,7 @@ class RoutineCalendar extends Component {
             workout_date: d
         };
 
-        this.props.createWorkout(workoutData);
+        this.props.getCreateWorkout(workoutData);
     };
 
     static getDerivedStateFromProps(props, state) {
@@ -162,17 +161,8 @@ class RoutineCalendar extends Component {
             return {errors: props.errors};
         }
 
-        if (props.routine.routine.workouts !== undefined) {
-            if (props.routine.routine.workouts !== state.workouts) {
-                return {
-                    workouts: props.routine.routine.workouts,
-                };
-            }
-        }
-
-        if (props.workout.workout !== undefined) {
+        if (props.workout.workout) {
             if (props.workout.workout !== state.workout) {
-
                 return {
                     workout: props.workout.workout,
                 }
@@ -182,12 +172,12 @@ class RoutineCalendar extends Component {
     };
 
     shouldDisableDate(day) {
-        const index = this.state.workouts.findIndex(d => moment(d.date).format(DATE_FORMAT) === moment(day).format(DATE_FORMAT));
+        const index = this.props.routine.routine.workouts.findIndex(d => moment(d.date).format(DATE_FORMAT) === moment(day).format(DATE_FORMAT));
         return index < 0;
     };
 
     isDateSelectable(date) {
-        const index = this.state.workouts.findIndex(d => moment(d.date).format(DATE_FORMAT) === moment(date).format(DATE_FORMAT));
+        const index = this.props.routine.routine.workouts.findIndex(d => moment(d.date).format(DATE_FORMAT) === moment(date).format(DATE_FORMAT));
         return index >= 0;
     };
 
@@ -219,10 +209,11 @@ class RoutineCalendar extends Component {
 
     onAccept(date) {
         this.setState({selectedDate: date});
+
         const workoutData = {
             workout_date: moment(date).format(DATE_FORMAT)
         };
-        this.props.createWorkout(workoutData);
+        this.props.getCreateWorkout(workoutData);
     };
 
     onCardAction(number, event) {
@@ -244,15 +235,15 @@ class RoutineCalendar extends Component {
     };
 
     onOpen() {
-        if (this.state.workouts
+        if (this.props.routine.routine.workouts
             .findIndex(d =>
                 moment(d.date).format(DATE_FORMAT) ===
                 moment(this.state.selectedDate).format(DATE_FORMAT)) < 0) {
 
-            for (let i = 0; i < this.state.workouts.length; i++) {
-                if (moment(this.state.workouts[i].date).format(DATE_FORMAT) >
+            for (let i = 0; i < this.props.routine.routine.workouts.length; i++) {
+                if (moment(this.props.routine.routine.workouts[i].date).format(DATE_FORMAT) >
                     moment(this.state.selectedDate).format(DATE_FORMAT)) {
-                    this.setState({selectedDate: this.state.workouts[i].date});
+                    this.setState({selectedDate: this.props.routine.routine.workouts[i].date});
                     break;
                 }
             }
@@ -403,8 +394,7 @@ class RoutineCalendar extends Component {
 
 RoutineCalendar.propTypes = {
     getRoutine: PropTypes.func.isRequired,
-    createWorkout: PropTypes.func.isRequired,
-    getWorkout: PropTypes.func.isRequired,
+    getCreateWorkout: PropTypes.func.isRequired,
     selectWorkout: PropTypes.func.isRequired,
     getExercise: PropTypes.func.isRequired,
     routine: PropTypes.object.isRequired,
@@ -420,8 +410,7 @@ const
 
 export default connect(mapStateToProps, {
     getRoutine,
-    createWorkout,
-    getWorkout,
+    getCreateWorkout,
     selectWorkout,
     getExercise
 })(withStyles(styles)(RoutineCalendar));
