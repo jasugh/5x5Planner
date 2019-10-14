@@ -219,30 +219,6 @@ class Workout extends Component {
         return null;
     };
 
-    // static getDerivedStateFromProps(props, state) {
-    //     if (props.workout.selected_workout.workout && state.state_init === false) {
-    //         let s = [];
-    //         let w = 0;
-    //         let r = 0;
-    //
-    //         alert('getDerivedStateFromProps ' + JSON.stringify(props.workout.selected_workout.workout));
-    //
-    //         s = props.workout.selected_workout.workout.exercises[0].sets;
-    //         w = s[s.length - 1].weight;
-    //         r = s[s.length - 1].reps;
-    //
-    //         return {
-    //             workout: props.workout.selected_workout.workout,
-    //             state_init: true,
-    //             weight: w,
-    //             reps: r,
-    //             startWeight: w,
-    //             startReps: r,
-    //         };
-    //     }
-    //     return null;
-    // };
-
     componentWillUnmount() {
         this.props.updateWorkout(this.state.workout);
     }

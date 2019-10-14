@@ -31,6 +31,7 @@ import TableRow from '@material-ui/core/TableRow';
 import {getRoutine} from '../../actions/routineActions';
 import {getCreateWorkout, clearSelectedWorkout, selectWorkout} from '../../actions/workoutActions';
 import {getExercise} from '../../actions/exerciseActions';
+import isEmpty from "../../validation/is-empty";
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -126,6 +127,7 @@ class RoutineCalendar extends Component {
         super();
         this.state = ({
             selectedDate: new Date(),
+            prev_workout: {},
             errors: {}
         });
 
@@ -135,30 +137,24 @@ class RoutineCalendar extends Component {
         this.onCardAction = this.onCardAction.bind(this);
     };
 
-
     componentDidMount() {
         this.props.getRoutine();
-
-        let d;
-        if (this.props.workout.selected_workout.workout) {
-            d = moment(this.props.workout.selected_workout.workout.workout_date).format(DATE_FORMAT);
-        } else {
-            d = this.state.selectedDate;
-        }
-
-        this.setState({selectedDate: d});
-
-        const workoutData = {
-            workout_date: d
-        };
-
-        this.props.getCreateWorkout(workoutData);
     };
 
     static getDerivedStateFromProps(props, state) {
         if (props.errors !== state.errors) {
             return {errors: props.errors};
         }
+
+        if (props.workout.selected_workout.workout !== undefined) {
+            if (props.workout.selected_workout.workout !== state.prev_workout) {
+                return {
+                    prev_workout: props.workout.selected_workout.workout,
+                    selectedDate: moment(props.workout.selected_workout.workout.workout_date).format(DATE_FORMAT)
+                };
+            }
+        }
+
         return null;
     };
 
@@ -283,7 +279,7 @@ class RoutineCalendar extends Component {
                         <Typography
                             color="primary"
                             variant="h6">
-                            No planned workouts for this date.
+                            Select date.
                         </Typography>
                     </Grid>
                 )
