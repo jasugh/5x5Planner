@@ -29,7 +29,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import {getRoutine} from '../../actions/routineActions';
-import {getCreateWorkout, selectWorkout} from '../../actions/workoutActions';
+import {getCreateWorkout, clearSelectedWorkout, selectWorkout} from '../../actions/workoutActions';
 import {getExercise} from '../../actions/exerciseActions';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -125,9 +125,7 @@ class RoutineCalendar extends Component {
     constructor() {
         super();
         this.state = ({
-            workouts: [],
             selectedDate: new Date(),
-            workout: [],
             errors: {}
         });
 
@@ -142,13 +140,14 @@ class RoutineCalendar extends Component {
         this.props.getRoutine();
 
         let d;
-        if(this.props.workout.selected_workout.workout) {
+        if (this.props.workout.selected_workout.workout) {
             d = moment(this.props.workout.selected_workout.workout.workout_date).format(DATE_FORMAT);
         } else {
-            d = moment(new Date()).format(DATE_FORMAT);
+            d = this.state.selectedDate;
         }
 
         this.setState({selectedDate: d});
+
         const workoutData = {
             workout_date: d
         };
@@ -159,14 +158,6 @@ class RoutineCalendar extends Component {
     static getDerivedStateFromProps(props, state) {
         if (props.errors !== state.errors) {
             return {errors: props.errors};
-        }
-
-        if (props.workout.workout) {
-            if (props.workout.workout !== state.workout) {
-                return {
-                    workout: props.workout.workout,
-                }
-            }
         }
         return null;
     };
@@ -217,11 +208,12 @@ class RoutineCalendar extends Component {
     };
 
     onCardAction(number, event) {
-        const workoutData = {
+        let workoutData = {
             workout_date: moment(this.state.selectedDate).format(DATE_FORMAT),
-            exercise: this.state.workout.workout.exercises[number].exercise
+            exercise: this.props.workout.workout.workout.exercises[number].exercise
         };
-        this.props.getExercise(this.state.workout.workout.exercises[number].exercise);
+
+        this.props.getExercise(this.props.workout.workout.workout.exercises[number].exercise);
         this.props.selectWorkout(workoutData);
         this.props.history.push('/workout');
     }
@@ -252,12 +244,13 @@ class RoutineCalendar extends Component {
 
     render() {
         const {classes} = this.props;
-        const {loading} = this.props.workout;
+        const {workout, loading} = this.props.workout;
+        const {routine_loading} = this.props.routine;
 
         let datePicker = [];
         let workoutTable = [];
 
-        if (!loading) {
+        if (!loading && !routine_loading) {
             datePicker.push(
                 <div key={'a'}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -284,7 +277,7 @@ class RoutineCalendar extends Component {
                 </div>
             );
 
-            if (this.state.workout.length === 0) {
+            if (workout.length === 0) {
                 workoutTable.push(
                     <Grid key="n">
                         <Typography
@@ -299,7 +292,7 @@ class RoutineCalendar extends Component {
                 workoutTable =
                     <div>
                         <main className={classes.layout}>
-                            {this.state.workout.workout.exercises.map((exercise_row, i) => {
+                            {workout.workout.exercises.map((exercise_row, i) => {
                                 return (
                                     <div key={i}>
                                         <Card
@@ -323,7 +316,7 @@ class RoutineCalendar extends Component {
                                                             size="small"
                                                             key={i}>
                                                             <TableBody>
-                                                                {this.state.workout.workout.exercises[i].sets.map((sets_row, ii) => {
+                                                                {workout.workout.exercises[i].sets.map((sets_row, ii) => {
                                                                     return (
                                                                         <TableRow
                                                                             className={classes.row}
@@ -373,7 +366,7 @@ class RoutineCalendar extends Component {
 
         return (
             <div>
-                {loading ? (
+                {loading || routine_loading ? (
                         <Grid container justify="center">
                             <CircularProgress className={classes.progress}/>
                         </Grid>
@@ -396,6 +389,7 @@ RoutineCalendar.propTypes = {
     getRoutine: PropTypes.func.isRequired,
     getCreateWorkout: PropTypes.func.isRequired,
     selectWorkout: PropTypes.func.isRequired,
+    clearSelectedWorkout: PropTypes.func.isRequired,
     getExercise: PropTypes.func.isRequired,
     routine: PropTypes.object.isRequired,
     workout: PropTypes.object.isRequired,
@@ -412,5 +406,6 @@ export default connect(mapStateToProps, {
     getRoutine,
     getCreateWorkout,
     selectWorkout,
+    clearSelectedWorkout,
     getExercise
 })(withStyles(styles)(RoutineCalendar));

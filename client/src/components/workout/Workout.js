@@ -156,6 +156,7 @@ class Workout extends Component {
 
             //From props:
             workout: {},
+            prev_workout: {},
 
             //Timer
             isOn: false,
@@ -194,35 +195,53 @@ class Workout extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.workout.selected_workout !== state.workout) {
-            if (state.startWeight === 0 && state.startReps === 0) {
+        if (props.workout.selected_workout.workout !== undefined) {
+            if (props.workout.selected_workout.workout !== state.prev_workout) {
+
                 let s = [];
                 let w = 0;
                 let r = 0;
 
-                if (props.workout.selected_workout.workout) {
-                    s = props.workout.selected_workout.workout.exercises[0].sets;
-                    w = s[s.length - 1].weight;
-                    r = s[s.length - 1].reps;
-                }
+                s = props.workout.selected_workout.workout.exercises[0].sets;
+                w = s[s.length - 1].weight;
+                r = s[s.length - 1].reps;
 
                 return {
                     workout: props.workout.selected_workout.workout,
+                    prev_workout: props.workout.selected_workout.workout,
                     weight: w,
                     reps: r,
                     startWeight: w,
                     startReps: r,
                 };
-            } else {
-
-                return {
-                    workout: props.workout.selected_workout.workout,
-                };
             }
         }
-
         return null;
     };
+
+    // static getDerivedStateFromProps(props, state) {
+    //     if (props.workout.selected_workout.workout && state.state_init === false) {
+    //         let s = [];
+    //         let w = 0;
+    //         let r = 0;
+    //
+    //         alert('getDerivedStateFromProps ' + JSON.stringify(props.workout.selected_workout.workout));
+    //
+    //         s = props.workout.selected_workout.workout.exercises[0].sets;
+    //         w = s[s.length - 1].weight;
+    //         r = s[s.length - 1].reps;
+    //
+    //         return {
+    //             workout: props.workout.selected_workout.workout,
+    //             state_init: true,
+    //             weight: w,
+    //             reps: r,
+    //             startWeight: w,
+    //             startReps: r,
+    //         };
+    //     }
+    //     return null;
+    // };
 
     componentWillUnmount() {
         this.props.updateWorkout(this.state.workout);
@@ -409,7 +428,7 @@ class Workout extends Component {
     render() {
         const {classes} = this.props;
         const {loading} = this.props.workout;
-        const {workout} = this.props.workout.selected_workout;
+        //const {workout} = this.props.workout.selected_workout;
 
         let workoutTable = [];
         let weightsReps = [];
@@ -431,12 +450,12 @@ class Workout extends Component {
             cancel_delete_comment = 'delete';
         }
 
-        if (!loading && workout === undefined) {
-            this.goBack();
-        }
+        // if (!loading && !workout) {
+        //     this.goBack();
+        // }
 
         //TODO: too many lines in the following if-statement
-        if (!loading && workout !== undefined) {
+        if (!loading) {
             //Header
             header =
                 <main className={classes.layout_narrow}>
