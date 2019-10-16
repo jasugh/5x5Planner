@@ -60,10 +60,16 @@ const styles = theme => ({
         // color: theme.palette.primary.main,
         background: theme.palette.primary.A100,
     },
-    fab: {
+    fabTop: {
         position: 'fixed',
         top: theme.spacing(10),
         right: theme.spacing(2),
+    },
+    fabBottom: {
+        margin: theme.spacing(1),
+        position: "fixed",
+        bottom: theme.spacing(2),
+        right: theme.spacing(3)
     },
 });
 
@@ -241,14 +247,15 @@ class Exercise extends Component {
                         </Typography>
 
                         <Fab
-                            className={classes.fab}
-                            style={{position: 'fixed'}}
+                            className={classes.fabBottom}
                             color="primary"
                             aria-label="add"
                             onClick={this.onAdd}
                             disabled={this.state.showAdd}
                         >
-                            <Tooltip title={"Add new exercise"}>
+                            <Tooltip
+                                title={"Add new exercise"}
+                            >
                                 <AddIcon
                                     color="inherit"
                                 />

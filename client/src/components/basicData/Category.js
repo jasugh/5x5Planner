@@ -52,10 +52,16 @@ const styles = theme => ({
     card: {
         marginTop: 10
     },
-    fab: {
+    fabTop: {
         position: 'fixed',
         top: theme.spacing(10),
         right: theme.spacing(2),
+    },
+    fabBottom: {
+        margin: theme.spacing(1),
+        position: "fixed",
+        bottom: theme.spacing(2),
+        right: theme.spacing(3)
     },
 });
 
@@ -186,13 +192,15 @@ class Category extends Component {
                         </Typography>
 
                         <Fab
-                            className={classes.fab}
+                            className={classes.fabBottom}
                             color="primary"
                             aria-label="add"
                             onClick={this.onAdd}
                             disabled={this.state.showAdd}
                         >
-                            <Tooltip title={"Add new category"}>
+                            <Tooltip
+                                title={"Add new category"}
+                            >
                                 <AddIcon
                                     color="inherit"
                                 />

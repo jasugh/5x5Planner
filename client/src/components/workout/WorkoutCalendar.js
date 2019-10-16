@@ -31,7 +31,11 @@ import TableRow from '@material-ui/core/TableRow';
 import {getRoutine} from '../../actions/routineActions';
 import {getCreateWorkout, clearSelectedWorkout, selectWorkout} from '../../actions/workoutActions';
 import {getExercise} from '../../actions/exerciseActions';
-import isEmpty from "../../validation/is-empty";
+import {
+    CircularProgressbar,
+    buildStyles,
+} from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -63,10 +67,13 @@ const styles = theme => ({
         // boxShadow: 'rgba(96, 125, 139, 1) 0px 1px 6px, rgba(96, 125, 139, 1) 0px 1px 4px'
     },
     cardPadding: {
-        // padding: 16,
         "&:last-child": {
             paddingBottom: 0
-        }
+        },
+        details: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
     },
     //KeyboardDatePicker
     day: {
@@ -120,6 +127,10 @@ const styles = theme => ({
         height: 2,
         backgroundColor: theme.palette.primary.main,
     },
+    progressDiv: {
+        width: 20,
+        paddingBottom: 10
+    }
 });
 
 class RoutineCalendar extends Component {
@@ -297,12 +308,48 @@ class RoutineCalendar extends Component {
                                             <CardActionArea>
                                                 <CardActions onClick={this.onCardAction.bind(this, i)}>
                                                     <CardContent className={classes.cardPadding}>
-                                                        <Typography
-                                                            value={exercise_row.exercise}
-                                                            name={"exercise"}
-                                                        >
-                                                            {exercise_row.exercise}
-                                                        </Typography>
+                                                        <Grid
+                                                            style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                            <Typography
+                                                                value={exercise_row.exercise}
+                                                                name={"exercise"}
+                                                            >
+                                                                {exercise_row.exercise}
+                                                            </Typography>
+                                                            <div className={classes.progressDiv}>
+                                                                <CircularProgressbar
+                                                                    value={(() => {
+                                                                        let count = 0;
+                                                                        for (let i = 0; i < exercise_row.sets.length; ++i) {
+                                                                            if (exercise_row.sets[i].finished === true)
+                                                                                count++;
+                                                                        }
+                                                                        return (count / exercise_row.sets.length) * 100;
+                                                                    })()}
+                                                                    strokeWidth={50}
+                                                                    styles={buildStyles({
+                                                                        strokeLinecap: 'butt',
+                                                                        pathColor: '#607d8b'
+                                                                    })}
+                                                                />
+                                                            </div>
+
+
+                                                            {/*<CircularProgress*/}
+                                                            {/*    size={20}*/}
+                                                            {/*    thickness={10}*/}
+                                                            {/*    variant="static"*/}
+                                                            {/*    value={(() => {*/}
+                                                            {/*        let count = 0;*/}
+                                                            {/*        for (let i = 0; i < exercise_row.sets.length; ++i) {*/}
+                                                            {/*            if (exercise_row.sets[i].finished === true)*/}
+                                                            {/*                count++;*/}
+                                                            {/*        }*/}
+                                                            {/*        return (count / exercise_row.sets.length) * 100;*/}
+                                                            {/*    })()}*/}
+                                                            {/*/>*/}
+
+                                                        </Grid>
                                                         <Divider
                                                             classes={{
                                                                 root: classes.dividerColor,
@@ -364,7 +411,7 @@ class RoutineCalendar extends Component {
             <div>
                 {loading || routine_loading ? (
                         <Grid container justify="center">
-                            <CircularProgress className={classes.progress}/>
+                            <CircularProgress/>
                         </Grid>
                     )
                     :

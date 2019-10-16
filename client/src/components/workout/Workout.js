@@ -33,6 +33,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import {updateWorkout, clearSelectedWorkout} from '../../actions/workoutActions';
 import {startRestTimer} from '../../actions/restTimerActions';
 import isEmpty from "../../validation/is-empty";
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
     bar1Determinate: {
@@ -135,6 +138,17 @@ const styles = theme => ({
     },
     typography: {
         padding: theme.spacing(2),
+    },
+    fabTop: {
+        position: 'fixed',
+        top: theme.spacing(10),
+        right: theme.spacing(2),
+    },
+    fabBottom: {
+        position: "fixed",
+        margin: theme.spacing(1),
+        bottom: theme.spacing(2),
+        right: theme.spacing(3)
     },
 });
 
@@ -439,6 +453,7 @@ class Workout extends Component {
                         <Typography
                             className={classes.paddingBottom}
                             color="primary"
+                            aria-label={"goBack"}
                             variant="h5"
                         >
                             {this.state.workout.exercises[0].exercise}
@@ -459,7 +474,22 @@ class Workout extends Component {
                     {/*        value={this.state.completed}*/}
                     {/*    />*/}
                     {/*</div>*/}
-                </main>;
+
+                    <Fab
+                        className={classes.fabBottom}
+                        color="primary"
+                        aria-label="goBack"
+                        onClick={this.onGo}
+                    >
+                        <Tooltip
+                            title={"Go back to calendar"}
+                        >
+                            <ArrowBackIcon
+                                color="inherit"
+                            />
+                        </Tooltip>
+                    </Fab>
+                </main>
 
             //Add - reduce kilos and reps
             weightsReps.push(
@@ -565,10 +595,11 @@ class Workout extends Component {
                         </FormHelperText>
                     </Grid>
 
-                    <div style={{padding: 5}}></div>
+                    {/*<div style={{padding: 5}}></div>*/}
 
-                    <Grid container
-                          justify="space-evenly"
+                    <Grid
+                        container
+                        justify="space-evenly"
                     >
                         <Button
                             style={{
@@ -690,6 +721,7 @@ class Workout extends Component {
                             </TableBody>
                         </Table>
 
+
                         <Dialog
                             open={this.state.alertOpen}
                             onClose={this.onAlertClose}
@@ -699,7 +731,7 @@ class Workout extends Component {
                             <DialogTitle id="alert-dialog-title">{"Next Exercise"}</DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
-                                    Sets complete. Do you want to move on to the next exercise?
+                                    Sets complete. Do you want to go back to calendar?
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
@@ -774,7 +806,7 @@ class Workout extends Component {
             <div>
                 {loading ? (
                         <Grid container justify="center">
-                            <CircularProgress className={classes.progress}/>
+                            <CircularProgress/>
                         </Grid>
                     )
                     :
