@@ -29,13 +29,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
-
-import {updateWorkout, clearSelectedWorkout} from '../../actions/workoutActions';
+import {updateWorkout, selectWorkout} from '../../actions/workoutActions';
 import {startRestTimer} from '../../actions/restTimerActions';
 import isEmpty from "../../validation/is-empty";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import * as moment from "moment";
 
 const styles = theme => ({
     bar1Determinate: {
@@ -200,6 +200,18 @@ class Workout extends Component {
         this.onDeleteComment = this.onDeleteComment.bind(this);
         this.onClickFinished = this.onClickFinished.bind(this);
         this.goBack = this.goBack.bind(this);
+    }
+
+    componentDidMount() {
+        const date = localStorage.getItem('selectedDate');
+        const exercise = localStorage.getItem('selectedExercise');
+
+        let workoutData = {
+            workout_date: date,
+            exercise: exercise
+        };
+
+        this.props.selectWorkout(workoutData);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -418,7 +430,7 @@ class Workout extends Component {
     render() {
         const {classes} = this.props;
         const {loading} = this.props.workout;
-        //const {workout} = this.props.workout.selected_workout;
+        const {workout} = this.props.workout.selected_workout;
 
         let workoutTable = [];
         let weightsReps = [];
@@ -444,8 +456,9 @@ class Workout extends Component {
         //     this.goBack();
         // }
 
+
         //TODO: too many lines in the following if-statement
-        if (!loading) {
+        if (!loading && workout) {
             //Header
             header =
                 <main className={classes.layout_narrow}>
@@ -826,7 +839,7 @@ class Workout extends Component {
 Workout.propTypes = {
     updateWorkout: PropTypes.func.isRequired,
     startRestTimer: PropTypes.func.isRequired,
-    clearSelectedWorkout: PropTypes.func.isRequired,
+    selectWorkout: PropTypes.func.isRequired,
     exercise: PropTypes.object.isRequired,
 };
 
@@ -838,5 +851,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     updateWorkout,
     startRestTimer,
-    clearSelectedWorkout
+    selectWorkout
 })(withStyles(styles)(Workout));

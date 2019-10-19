@@ -36,8 +36,10 @@ import {
     buildStyles,
 } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
+let pr;
 
 const styles = theme => ({
     pickerGrid: {
@@ -129,16 +131,21 @@ const styles = theme => ({
     },
     progressDiv: {
         width: 20,
-        paddingBottom: 10
-    }
+        paddingBottom: 10,
+        paddingRight: 10
+    },
+    iconColor: {
+        marginRight: 20,
+        color: theme.palette.primary.main,
+    },
 });
 
 class RoutineCalendar extends Component {
     constructor() {
         super();
         this.state = ({
-            selectedDate: new Date(),
-            prev_workout: {},
+            selectedDate: moment(new Date()).format(DATE_FORMAT),
+            // prev_workout: {},
             errors: {}
         });
 
@@ -149,21 +156,23 @@ class RoutineCalendar extends Component {
     };
 
     componentDidMount() {
+        let date = moment(new Date()).format(DATE_FORMAT);
+        if (localStorage.getItem('selectedDate')) {
+            date = moment(localStorage.getItem('selectedDate')).format(DATE_FORMAT);
+        }
+
+        const workoutData = {
+            workout_date: date,
+        };
+
+        this.setState({selectedDate: date});
+        this.props.getCreateWorkout(workoutData);
         this.props.getRoutine();
     };
 
     static getDerivedStateFromProps(props, state) {
         if (props.errors !== state.errors) {
             return {errors: props.errors};
-        }
-
-        if (props.workout.selected_workout.workout !== undefined) {
-            if (props.workout.selected_workout.workout !== state.prev_workout) {
-                return {
-                    prev_workout: props.workout.selected_workout.workout,
-                    selectedDate: moment(props.workout.selected_workout.workout.workout_date).format(DATE_FORMAT)
-                };
-            }
         }
 
         return null;
@@ -206,22 +215,26 @@ class RoutineCalendar extends Component {
     };
 
     onAccept(date) {
-        this.setState({selectedDate: date});
+        this.setState({selectedDate: moment(date).format(DATE_FORMAT)});
 
         const workoutData = {
             workout_date: moment(date).format(DATE_FORMAT)
         };
+
+        localStorage.setItem('selectedDate', workoutData.workout_date);
         this.props.getCreateWorkout(workoutData);
     };
 
     onCardAction(number, event) {
-        let workoutData = {
-            workout_date: moment(this.state.selectedDate).format(DATE_FORMAT),
-            exercise: this.props.workout.workout.workout.exercises[number].exercise
-        };
+        // let workoutData = {
+        //     workout_date: moment(this.state.selectedDate).format(DATE_FORMAT),
+        //     exercise: this.props.workout.workout.workout.exercises[number].exercise
+        // };
 
         this.props.getExercise(this.props.workout.workout.workout.exercises[number].exercise);
-        this.props.selectWorkout(workoutData);
+        //    this.props.selectWorkout(workoutData);
+
+        localStorage.setItem('selectedExercise', this.props.workout.workout.workout.exercises[number].exercise);
         this.props.history.push('/workout');
     }
 
@@ -317,21 +330,48 @@ class RoutineCalendar extends Component {
                                                                 {exercise_row.exercise}
                                                             </Typography>
                                                             <div className={classes.progressDiv}>
-                                                                <CircularProgressbar
-                                                                    value={(() => {
-                                                                        let count = 0;
-                                                                        for (let i = 0; i < exercise_row.sets.length; ++i) {
-                                                                            if (exercise_row.sets[i].finished === true)
-                                                                                count++;
-                                                                        }
-                                                                        return (count / exercise_row.sets.length) * 100;
-                                                                    })()}
-                                                                    strokeWidth={50}
-                                                                    styles={buildStyles({
-                                                                        strokeLinecap: 'butt',
-                                                                        pathColor: '#607d8b'
-                                                                    })}
-                                                                />
+                                                                {(() => {
+                                                                    let count = 0;
+                                                                    for (let i = 0; i < exercise_row.sets.length; ++i) {
+                                                                        if (exercise_row.sets[i].finished === true)
+                                                                            count++;
+                                                                    }
+                                                                    pr = (count / exercise_row.sets.length) * 100;
+                                                                    return (count / exercise_row.sets.length) * 100;
+                                                                })() === 100 ?
+                                                                    (
+                                                                        <DoneOutlineIcon className={classes.iconColor}/>
+                                                                    )
+                                                                    :
+                                                                    (
+                                                                        <CircularProgressbar
+                                                                            value={pr}
+                                                                            strokeWidth={50}
+                                                                            styles={buildStyles({
+                                                                                strokeLinecap: 'butt',
+                                                                                pathColor: '#607d8b'
+                                                                            })}
+                                                                        />
+
+
+                                                                    )}
+
+
+                                                                {/*<CircularProgressbar*/}
+                                                                {/*    value={(() => {*/}
+                                                                {/*        let count = 0;*/}
+                                                                {/*        for (let i = 0; i < exercise_row.sets.length; ++i) {*/}
+                                                                {/*            if (exercise_row.sets[i].finished === true)*/}
+                                                                {/*                count++;*/}
+                                                                {/*        }*/}
+                                                                {/*        return (count / exercise_row.sets.length) * 100;*/}
+                                                                {/*    })()}*/}
+                                                                {/*    strokeWidth={50}*/}
+                                                                {/*    styles={buildStyles({*/}
+                                                                {/*        strokeLinecap: 'butt',*/}
+                                                                {/*        pathColor: '#607d8b'*/}
+                                                                {/*    })}*/}
+                                                                {/*/>*/}
                                                             </div>
 
 

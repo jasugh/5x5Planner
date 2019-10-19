@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 workout: action.payload,
-                // loading: false,                      loading -> false when get_workout is finished
+                // loading: false,                      loading -> false untill get_workout is finished
             };
         case UPDATE_WORKOUT:
             return {
