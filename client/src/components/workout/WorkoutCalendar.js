@@ -157,8 +157,11 @@ class RoutineCalendar extends Component {
 
     componentDidMount() {
         let date = moment(new Date()).format(DATE_FORMAT);
+
         if (localStorage.getItem('selectedDate')) {
             date = moment(localStorage.getItem('selectedDate')).format(DATE_FORMAT);
+        } else {
+            alert('no selectedDate');
         }
 
         const workoutData = {

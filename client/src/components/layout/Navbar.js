@@ -235,7 +235,6 @@ class Navbar extends Component {
         let restTimer;
 
         if (isAuthenticated) {
-            //TODO: in some cases state.ready is left true and when logged in alarm sound is played
             if (this.state.ready) {
                 restTimer =
                     <div style={{paddingTop: 5}}>
@@ -448,7 +447,7 @@ class Navbar extends Component {
                                 to="/workout/calendar"
 
                             >
-                                <ListItemText primary="Workout Calendar"/>
+                                <ListItemText primary="Calendar"/>
                             </ListItem>
                         </List>
                     </Drawer>
