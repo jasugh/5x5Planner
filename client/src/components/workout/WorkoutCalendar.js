@@ -31,15 +31,10 @@ import TableRow from '@material-ui/core/TableRow';
 import {getRoutine} from '../../actions/routineActions';
 import {getCreateWorkout, clearSelectedWorkout, selectWorkout} from '../../actions/workoutActions';
 import {getExercise} from '../../actions/exerciseActions';
-import {
-    CircularProgressbar,
-    buildStyles,
-} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
-let pr;
 
 const styles = theme => ({
     pickerGrid: {
@@ -337,44 +332,16 @@ class RoutineCalendar extends Component {
                                                                         if (exercise_row.sets[i].finished === true)
                                                                             count++;
                                                                     }
-                                                                    pr = (count / exercise_row.sets.length) * 100;
-                                                                    return (count / exercise_row.sets.length) * 100;
-                                                                })() === 100 ?
+                                                                    return count === exercise_row.sets.length;
+                                                                })() ?
                                                                     (
                                                                         <DoneOutlineIcon className={classes.iconColor}/>
                                                                     )
                                                                     :
                                                                     (
-                                                                        <CircularProgressbar
-                                                                            value={pr}
-                                                                            strokeWidth={50}
-                                                                            styles={buildStyles({
-                                                                                strokeLinecap: 'butt',
-                                                                                pathColor: '#607d8b'
-                                                                            })}
-                                                                        />
-
-
+                                                                        ''
                                                                     )}
-
-
-                                                                {/*<CircularProgressbar*/}
-                                                                {/*    value={(() => {*/}
-                                                                {/*        let count = 0;*/}
-                                                                {/*        for (let i = 0; i < exercise_row.sets.length; ++i) {*/}
-                                                                {/*            if (exercise_row.sets[i].finished === true)*/}
-                                                                {/*                count++;*/}
-                                                                {/*        }*/}
-                                                                {/*        return (count / exercise_row.sets.length) * 100;*/}
-                                                                {/*    })()}*/}
-                                                                {/*    strokeWidth={50}*/}
-                                                                {/*    styles={buildStyles({*/}
-                                                                {/*        strokeLinecap: 'butt',*/}
-                                                                {/*        pathColor: '#607d8b'*/}
-                                                                {/*    })}*/}
-                                                                {/*/>*/}
                                                             </div>
-
 
                                                             {/*<CircularProgress*/}
                                                             {/*    size={20}*/}

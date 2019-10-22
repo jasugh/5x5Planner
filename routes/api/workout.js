@@ -103,7 +103,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                         sets.push(set);
 
                         exercises = [];
-                        for(i = 0; i < routine.workouts[index].add_exercises.length; i++){
+                        for (i = 0; i < routine.workouts[index].add_exercises.length; i++) {
                             const exercise = {
                                 exercise: routine.workouts[index].add_exercises[i].add_exercise,
                                 sets: sets
@@ -174,27 +174,21 @@ router.post('/update', passport.authenticate('jwt', {session: false}), (req, res
             e[returnIndex] = req.body.exercises[0];
             w.exercises = e;
 
-            Workout.findOneAndDelete({
-                user: req.user.id,
-                workout_date: d.toISOString(),
-            })
-                .then(del => {
+            const workoutFields = {};
+            workoutFields.user = req.user.id;
+            workoutFields.workout_date = req.body.workout_date;
+            workoutFields.exercises = w.exercises;
 
-                    const workoutFields = {};
-                    workoutFields.user = req.user.id;
-                    workoutFields.workout_date = req.body.workout_date;
-                    workoutFields.exercises = w.exercises;
-
-
-                    // Create new Workout
-                    new Workout(workoutFields)
-                        .save()
-                        .then(workout => {
-                            result_text = 'Workout date ' + moment(d).format('YYYY-MM-DD');
-                            return res.status(200).json({msg: result_text})
-                        })
-                })
-                .catch(err => res.status(404).json(err));
+            Workout.findOneAndUpdate(
+                {user: req.user.id,
+                 workout_date: d.toISOString()},
+                {$set: workoutFields},
+                {new: true}
+            )
+                .then(workout => {
+                    result_text = 'Workout date ' + moment(d).format('YYYY-MM-DD');
+                    return res.status(200).json(workout)
+                }).catch(err => res.status(404).json(err));
         })
         .catch(err => res.status(404).json(err));
 
