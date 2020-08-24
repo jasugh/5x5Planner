@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+
 import authReducer from './authReducer';
 import planReducer from './planReducer';
 import routineDayReducer from "./routineDayReducer";
@@ -9,9 +10,6 @@ import settingsReducer from "./settingsReducer";
 import categoryReducer from './categoryReducer';
 import exerciseReducer from "./exerciseReducer";
 import errorReducer from './errorReducer'
-
-
-//TODO: reset store when user logs out
 
 export default combineReducers({
     auth: authReducer,

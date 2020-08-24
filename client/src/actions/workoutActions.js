@@ -124,7 +124,7 @@ export const updateWorkout = (workoutData) => dispatch => {
                 type: UPDATE_WORKOUT,
                 payload: res.data
             });
-            dispatch(getWorkout(workoutData));
+            // dispatch(getWorkout(workoutData));
         })
         .catch(err => {
             dispatch({

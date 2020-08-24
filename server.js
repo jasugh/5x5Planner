@@ -27,7 +27,7 @@ mongoose
     .connect(db, {
         useNewUrlParser: true,
         useFindAndModify: false,
-        useUnifiedTopology: true,
+        useUnifiedTopology: true
     })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
@@ -58,6 +58,6 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

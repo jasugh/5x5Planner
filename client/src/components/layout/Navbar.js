@@ -18,7 +18,8 @@ import {Link as RouterLink} from 'react-router-dom';
 
 import Alarm from '@material-ui/icons/Alarm';
 import Tooltip from '@material-ui/core/Tooltip';
-import soundfile from "../workout/Twin-bell-alarm-clock.mp3";
+// import soundfile from "../workout/Twin-bell-alarm-clock.mp3";
+import soundfile from "./service-bell.mp3";
 import {Grid} from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Divider from '@material-ui/core/Divider';
@@ -232,29 +233,26 @@ class Navbar extends Component {
         );
 
         //Rest timer
-        let restTimer;
+        let restTimer = [];
+
+        /*<div style={{paddingTop: 5}} key={1}>*/
 
         if (isAuthenticated) {
             if (this.state.ready) {
-                restTimer =
-                    <div style={{paddingTop: 5}}>
-                        <Alarm
-                            className={classes.height}
-                            color="inherit"
+                restTimer.push(
+                    <div>
+                        <audio
+                            ref="audio-tag"
+                            src={soundfile}
+                            controls={false}
+                            autoPlay
                         />
-                        <div>
-                            <audio
-                                ref="audio-tag"
-                                src={soundfile}
-                                controls={false}
-                                autoPlay
-                            />
-                        </div>
                     </div>
+                )
             } else {
                 if (this.state.isOn) {
-                    restTimer =
-                        <div className={classes.paddingBottom}>
+                    restTimer.push(
+                        <div className={classes.paddingBottom} key={2}>
                             <Typography
                                 color="inherit"
                                 variant="h5"
@@ -262,20 +260,26 @@ class Navbar extends Component {
                                 {this.state.time / 1000}
                             </Typography>
                         </div>
-                } else {
-                    restTimer =
-                        <div style={{paddingTop: 5}}>
-                            <Alarm
-                                className={classes.height}
-                                color="inherit"
-                            />
-                        </div>
+                    )
                 }
+            }
+            if ((this.state.ready && !this.state.isOn) ||
+                (!this.state.ready && !this.state.isOn)) {
+                restTimer.push(
+                    <div style={{marginTop: -6}} key={3}>
+                        <IconButton
+                            color="inherit"
+                            // style={{paddingTop: 5}}
+                        >
+                            <Alarm/>
+                        </IconButton>
+                    </div>
+                )
             }
         }
 
         return (
-            <div  className={classes.linearPadding}>
+            <div className={classes.linearPadding}>
                 <div>
                     <AppBar
                         className={classes.appBar}

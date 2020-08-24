@@ -16,6 +16,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import * as moment from 'moment';
 import isEmpty from "../../validation/is-empty";
@@ -76,7 +78,11 @@ const styles = theme => ({
     },
     expansionPanel:{
         backgroundColor: 'transparent'
-    }
+    },
+    deleteIcon: {
+    color: theme.palette.secondary.main,
+    fontSize: 20
+}
 });
 
 class RoutineTable extends Component {
@@ -99,6 +105,7 @@ class RoutineTable extends Component {
         this.onChange = this.onChange.bind(this);
         this.onChangeAdditional = this.onChangeAdditional.bind(this);
         this.onUpdateRoutine = this.onUpdateRoutine.bind(this);
+        this.onDeleteRoutine = this.onDeleteRoutine.bind(this);
     };
 
     onChecked = panel => event => {
@@ -134,6 +141,7 @@ class RoutineTable extends Component {
         this.setState({workouts: wo});
     }
 
+
     onChangeAdditional(ind, event) {
         // this.setState({changed: true});
 
@@ -161,6 +169,14 @@ class RoutineTable extends Component {
         // this.setState({changed: false, update: false});
 
         this.props.updateRoutine(updatedRoutine, this.props.history);
+    }
+
+    onDeleteRoutine(event){
+
+    }
+
+    onDeleteClick(e, ma){
+
     }
 
     onCheckUpdate = name => event => {
@@ -262,6 +278,17 @@ class RoutineTable extends Component {
                                                     }}
                                                 />
                                             </div>
+                                            <div>
+                                                <IconButton
+                                                    onClick={event => this.onDeleteClick(this.state.workouts[index].exercise1, 'm')}
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                >
+                                                    <DeleteIcon
+                                                        className={classes.deleteIcon}
+                                                    />
+                                                </IconButton>
+                                            </div>
                                         </ExpansionPanelDetails>
 
                                         <ExpansionPanelDetails className={classes.details}>
@@ -307,6 +334,17 @@ class RoutineTable extends Component {
                                                             position="end">reps</InputAdornment>,
                                                     }}
                                                 />
+                                            </div>
+                                            <div>
+                                                <IconButton
+                                                    onClick={event => this.onDeleteClick(this.state.workouts[index].exercise2, 'm')}
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                >
+                                                    <DeleteIcon
+                                                        className={classes.deleteIcon}
+                                                    />
+                                                </IconButton>
                                             </div>
                                         </ExpansionPanelDetails>
 
@@ -355,20 +393,31 @@ class RoutineTable extends Component {
                                                     }}
                                                 />
                                             </div>
+                                            <div>
+                                                <IconButton
+                                                    onClick={event => this.onDeleteClick(this.state.workouts[index].exercise3, 'm')}
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                >
+                                                    <DeleteIcon
+                                                        className={classes.deleteIcon}
+                                                    />
+                                                </IconButton>
+                                            </div>
                                         </ExpansionPanelDetails>
                                     </div>
 
                                     {/* Additional exercises ----> */}
 
                                     <Divider style={{height: 2}}/>
-
                                     <div>
                                         <Typography style={{paddingLeft: 25, paddingTop: 5}}>
                                             Additional exercises:
                                         </Typography>
+                                        <br/>
                                         {row.add_exercises.map((addExercise, ind) => {
                                                 return (
-                                                    <ExpansionPanelDetails className={classes.details}>
+                                                    <ExpansionPanelDetails className={classes.details} key={ind}>
                                                         <div className={classes.column}>
                                                             <Typography
                                                                 className={classes.exerciseHeader}
@@ -413,6 +462,17 @@ class RoutineTable extends Component {
                                                                 }}
                                                             />
                                                         </div>
+                                                        <div>
+                                                            <IconButton
+                                                                onClick={event => this.onDeleteClick(addExercise.add_exercise, 'a')}
+                                                                edge="end"
+                                                                aria-label="delete"
+                                                            >
+                                                                <DeleteIcon
+                                                                    className={classes.deleteIcon}
+                                                                />
+                                                            </IconButton>
+                                                        </div>
                                                     </ExpansionPanelDetails>
                                                 )
                                             }
@@ -420,8 +480,6 @@ class RoutineTable extends Component {
                                     </div>
 
                                     <Divider style={{height: 2}}/>
-
-                                    {/* Update button ----> */}
 
                                     <ExpansionPanelActions className={classes.buttonJustify}>
                                         <Button
@@ -433,6 +491,17 @@ class RoutineTable extends Component {
                                         >
                                             update
                                         </Button>
+
+                                        <Button
+                                            className={classes.buttonPadding}
+                                            size="medium"
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={this.onDeleteRoutine}
+                                        >
+                                            delete
+                                        </Button>
+
                                     </ExpansionPanelActions>
 
                                 </ExpansionPanel>

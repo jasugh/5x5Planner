@@ -129,7 +129,7 @@ class RoutineList extends Component {
 
                                         {row.add_exercises.map((row, index) => {
                                             return (
-                                                    <TableCell>
+                                                    <TableCell key={index}>
                                                         {row.add_exercise}
                                                     </TableCell>
                                             )

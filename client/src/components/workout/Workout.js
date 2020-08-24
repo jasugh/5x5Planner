@@ -30,12 +30,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {updateWorkout, selectWorkout} from '../../actions/workoutActions';
+import {getExercise} from '../../actions/exerciseActions';
 import {startRestTimer} from '../../actions/restTimerActions';
 import isEmpty from "../../validation/is-empty";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-// import * as moment from "moment";
+import * as moment from "moment";
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 const styles = theme => ({
     bar1Determinate: {
@@ -211,6 +214,7 @@ class Workout extends Component {
             exercise: exercise
         };
 
+        this.props.getExercise(exercise);
         this.props.selectWorkout(workoutData);
     }
 
@@ -463,14 +467,26 @@ class Workout extends Component {
             header =
                 <main className={classes.layout_narrow}>
                     <Grid container justify="center">
-                        <Typography
-                            className={classes.paddingBottom}
-                            color="primary"
-                            aria-label={"goBack"}
-                            variant="h5"
-                        >
-                            {this.state.workout.exercises[0].exercise}
-                        </Typography>
+                        <div>
+
+                            <Typography
+                                className={classes.paddingBottom}
+                                color="primary"
+                                aria-label={"goBack"}
+                                variant="h5"
+                            >
+                                {this.state.workout.exercises[0].exercise}
+                            </Typography>
+                            <Grid>
+                            <Typography
+                                className={classes.paddingBottom}
+                                color="primary"
+                                variant="subtitle2"
+                            >
+                                {moment(this.state.workout.workout_date).format(DATE_FORMAT)}
+                            </Typography>
+                            </Grid>
+                        </div>
                     </Grid>
 
                     {/*<Grid style={{height: 40}} container justify="center">*/}
@@ -840,6 +856,7 @@ Workout.propTypes = {
     updateWorkout: PropTypes.func.isRequired,
     startRestTimer: PropTypes.func.isRequired,
     selectWorkout: PropTypes.func.isRequired,
+    getExercise: PropTypes.func.isRequired,
     exercise: PropTypes.object.isRequired,
 };
 
@@ -851,5 +868,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     updateWorkout,
     startRestTimer,
-    selectWorkout
+    selectWorkout,
+    getExercise
 })(withStyles(styles)(Workout));

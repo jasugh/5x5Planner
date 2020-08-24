@@ -60,11 +60,6 @@ const styles = theme => ({
         // color: theme.palette.primary.main,
         background: theme.palette.primary.A100,
     },
-    fabTop: {
-        position: 'fixed',
-        top: theme.spacing(10),
-        right: theme.spacing(2),
-    },
     fabBottom: {
         margin: theme.spacing(1),
         position: "fixed",
@@ -126,8 +121,6 @@ class Exercise extends Component {
     }
 
     onSave() {
-
-
         if (this.state.id) {
             const exerciseData = {
                 id: this.state.id,
