@@ -27,6 +27,7 @@ import {getPlan, savePlan, deletePlan} from "../../actions/planActions";
 import {createRoutineBeginner, createRoutineExperienced, createRoutineFixed} from "../../actions/routineActions";
 
 import isEmpty from "../../validation/is-empty";
+import Divider from '@material-ui/core/Divider';
 
 const styles = theme => ({
     buttonJustify: {
@@ -71,7 +72,7 @@ const styles = theme => ({
         height: 10,
     },
     radioGroup: {
-        paddingTop: 15,
+        paddingTop: 5,
         display: 'flex',
         flexWrap: 'nowrap',
         flexDirection: 'row',
@@ -326,7 +327,7 @@ class Plan extends Component {
                                 variant="subtitle2"
                                 color="primary"
                             >
-                                Select 3 training week days
+                                Select 3 training week days:
                             </Typography>
                             <FormGroup row>
                                 <FormControlLabel
@@ -439,7 +440,7 @@ class Plan extends Component {
                                 color="primary"
                                 variant={"subtitle2"}
                             >
-                                Start date
+                                Start date:
                             </Typography>
                             <TextField
                                 className={classes.paddingLeft}
@@ -459,6 +460,16 @@ class Plan extends Component {
                                 variant={"caption"}
                             >
                                 {moment(this.state.start_date).format('dddd')}
+                            </Typography>
+
+                            {/*<Divider variant='fullWidth'  style={{marginTop: 20, height: 4}}/>*/}
+
+                            <Typography
+                                style={{paddingTop: 15}}
+                                variant="subtitle2"
+                                color="primary"
+                            >
+                                Select an exercise level:
                             </Typography>
 
                             <RadioGroup
@@ -492,6 +503,7 @@ class Plan extends Component {
 
                             <Typography
                                 className={classes.fontWeight}
+                                style={{paddingLeft: 'inherit'}}
                                 variant="subtitle1"
 
                             >

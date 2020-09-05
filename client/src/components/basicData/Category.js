@@ -49,9 +49,6 @@ const styles = theme => ({
         paddingTop: 10,
         paddingLeft: 25,
     },
-    card: {
-        marginTop: 10
-    },
     fabTop: {
         position: 'fixed',
         top: theme.spacing(10),
