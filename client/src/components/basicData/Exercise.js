@@ -48,7 +48,7 @@ const styles = theme => ({
         width: 110,
         [theme.breakpoints.down("sm")]: {
             margin: 5,
-            width: 100,
+            width: 90,
         }
     },
     typography: {
@@ -378,7 +378,7 @@ class Exercise extends Component {
                             />
                         </Grid>
 
-                        <Grid style={ {paddingTop: 40} } container justify="space-between">
+                        <Grid item style={ {paddingTop: 20} }>
                             <Button
                                 className={ classes.buttonPadding }
                                 size={ "medium" }

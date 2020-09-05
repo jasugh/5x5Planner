@@ -42,7 +42,7 @@ const styles = theme => ({
         width: 110,
         [theme.breakpoints.down("sm")]: {
             margin: 5,
-            width: 100,
+            width: 90,
         }
     },
     typography: {
@@ -99,7 +99,7 @@ class Category extends Component {
     };
 
     onAdd() {
-        this.setState({showAdd: true, name: ''})
+        this.setState({showAdd: true, name: ''});
     }
 
     onSave() {
@@ -179,24 +179,24 @@ class Category extends Component {
 
         if (!loading) {
             categoryView.push(
-                <div key={"a"}>
+                <div key={ "a" }>
                     <Grid container justify="center">
                         <Typography
-                            className={classes.typography}
+                            className={ classes.typography }
                             color="primary"
                             variant="h6">
                             Categories
                         </Typography>
 
                         <Fab
-                            className={classes.fabBottom}
+                            className={ classes.fabBottom }
                             color="primary"
                             aria-label="add"
-                            onClick={this.onAdd}
-                            disabled={this.state.showAdd}
+                            onClick={ this.onAdd }
+                            disabled={ this.state.showAdd }
                         >
                             <Tooltip
-                                title={"Add new category"}
+                                title={ "Add new category" }
                             >
                                 <AddIcon
                                     color="inherit"
@@ -209,8 +209,8 @@ class Category extends Component {
 
             if (this.state.showAdd || errors.name) {
                 categoryView.push(
-                    <Grid style={{paddingTop: 20}} container justify="center" key={"b"}>
-                        <Grid item xs={12}>
+                    <Grid style={ {paddingTop: 20} } container justify="center" key={ "b" }>
+                        <Grid item xs={ 12 }>
                             <Typography
                                 variant="subtitle2"
                                 color="primary"
@@ -218,10 +218,10 @@ class Category extends Component {
                                 Category:
                             </Typography>
                             <TextField
-                                value={this.state.name}
-                                error={!isEmpty(errors.name)}
-                                helperText={errors.name}
-                                onChange={this.onChange}
+                                value={ this.state.name }
+                                error={ !isEmpty(errors.name) }
+                                helperText={ errors.name }
+                                onChange={ this.onChange }
                                 required
                                 id="category"
                                 name="name"
@@ -229,32 +229,32 @@ class Category extends Component {
                             />
                         </Grid>
 
-                        <Grid style={{paddingTop: 40}} container justify="space-between">
+                        <Grid item style={ {paddingTop: 20} }>
                             <Button
-                                className={classes.buttonPadding}
-                                size={"medium"}
-                                variant={"contained"}
+                                className={ classes.buttonPadding }
+                                size={ "medium" }
+                                variant={ "contained" }
                                 color="primary"
-                                onClick={this.onSave}
+                                onClick={ this.onSave }
                             >
-                                {button_text}
+                                { button_text }
                             </Button>
                             <Button
-                                className={classes.buttonPadding}
-                                disabled={!this.state.id}
-                                size={"medium"}
-                                variant={"contained"}
+                                className={ classes.buttonPadding }
+                                disabled={ !this.state.id }
+                                size={ "medium" }
+                                variant={ "contained" }
                                 color="secondary"
-                                onClick={this.onDelete}
+                                onClick={ this.onDelete }
                             >
                                 delete
                             </Button>
                             <Button
-                                className={classes.buttonPadding}
-                                size={"medium"}
-                                variant={"contained"}
+                                className={ classes.buttonPadding }
+                                size={ "medium" }
+                                variant={ "contained" }
                                 color="inherit"
-                                onClick={this.onCancel}
+                                onClick={ this.onCancel }
                             >
                                 cancel
                             </Button>
@@ -263,22 +263,22 @@ class Category extends Component {
                 );
             } else {
                 categoryView.push(
-                    <List style={{maxHeight: 800, overflow: "auto"}} component="nav" key={"c"}>
-                        {category.map((row, index) => {
+                    <List style={ {maxHeight: 800, overflow: "auto"} } component="nav" key={ "c" }>
+                        { category.map((row, index) => {
                             return (
                                 <ListItem
                                     divider
 
-                                    key={index}
-                                    index={index}
+                                    key={ index }
+                                    index={ index }
                                     button
-                                    selected={this.state.selectedIndex === index}
-                                    onClick={event => this.onListItemClick(event, index)}
+                                    selected={ this.state.selectedIndex === index }
+                                    onClick={ event => this.onListItemClick(event, index) }
                                 >
-                                    <ListItemText primary={row.name}/>
+                                    <ListItemText primary={ row.name }/>
                                 </ListItem>
-                            )
-                        })}
+                            );
+                        }) }
                     </List>
                 );
             }
@@ -286,17 +286,17 @@ class Category extends Component {
 
         return (
             <div>
-                {loading ? (
+                { loading ? (
                         <Grid container justify="center">
-                            <CircularProgress className={classes.progress}/>
+                            <CircularProgress className={ classes.progress }/>
                         </Grid>
                     )
                     :
                     (
-                        <main className={classes.layout}>
-                            {categoryView}
+                        <main className={ classes.layout }>
+                            { categoryView }
                         </main>
-                    )}
+                    ) }
             </div>
         );
     }

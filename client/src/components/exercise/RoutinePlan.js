@@ -750,7 +750,7 @@ class Plan extends Component {
                                 color="primary"
                                 onClick={this.onCreateRoutine}
                             >
-                                create routine
+                                create
                             </Button>
                             <Button
                                 className={classes.buttonPadding}
